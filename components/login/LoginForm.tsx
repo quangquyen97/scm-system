@@ -1,4 +1,8 @@
+import React from "react";
+
 export default function Example() {
+  const [isPasswordViewed, setIsPasswordViewed] = React.useState(false);
+  const [isText, setIsText] = React.useState(false);
 
   return (
     <>
@@ -34,35 +38,30 @@ export default function Example() {
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={isText ? "text" : "password"}
                   autoComplete="current-password"
                   required
                   className="relative block w-full border placeholder-gray-300 border-gray-300 px-7 py-2 text-gray-900  focus:z-10 focus:outline-none sm:text-sm rounded-md shadow-sm"
                   placeholder="Password"
                   style={{ borderRadius: 24 }}
                 />
-                <span><img id="on" onClick={() => { 
-
-                
-
-                   const passField:any = document.getElementById("password");
-                   const showBtn:any = document.querySelector("span img");
-                   
-                  if(passField.type === "password"){
-                    passField.type = "text";
-                    showBtn.classList.add("hide-btn");
-                    document.images['on'].src = "https://img.icons8.com/ios/50/null/closed-eye.png";
-                  }else{
-                    passField.type = "password";
-                    showBtn.classList.remove("hide-btn");
-                    document.images['on'].src = "https://img.icons8.com/fluency-systems-filled/48/null/visible.png";
-                  }
-                 }} src="https://img.icons8.com/fluency-systems-filled/48/null/visible.png"/></span>
-                <div>
-                
-                </div>
+                <span>
+                  <img
+                    id="on"
+                    onClick={() => {
+                      setIsPasswordViewed(!isPasswordViewed);
+                      setIsText(!isText);
+                    }}
+                    src={
+                      isPasswordViewed
+                        ? "https://img.icons8.com/fluency-systems-filled/48/null/visible.png"
+                        : "https://img.icons8.com/ios/50/null/closed-eye.png"
+                    }
+                  />
+                </span>
+                <div></div>
               </div>
-            </div> 
+            </div>
 
             <div>
               <button
