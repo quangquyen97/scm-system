@@ -16,7 +16,6 @@ export default function FormSendMailRequest (){
                     <label htmlFor="email-address" className="font-light my-3">
                     Enter your user account's verified email address and we will send you a password reset link.
                     </label>
-\
                     <input
                       id="email-address"
                       name="email"

@@ -89,7 +89,7 @@ export default function LoginForm() {
 
                     <div className="text-sm">
                       <Link
-                        href="/password_reset"
+                        href="/password-reset"
                         className="aEffect ml-2 block text-sm text-gray-900"
                       >
                         Forgot password?
@@ -106,10 +106,11 @@ export default function LoginForm() {
                   className="absolute m-auto"
                   style={{
                     width: "25%",
-                    left: 0,
-                    right: 0,
-                    top: -13,
-                    background: "white",
+                  left: 0,
+                  right: 0,
+                  top: -10,
+                  background: "white",
+                  fontSize:12
                   }}
                 >
                   OR
@@ -126,9 +127,9 @@ export default function LoginForm() {
               <div className="text-center">
                 <span>
                   Don't have an account ?{" "}
-                  <a style={{ color: "#e35c22", fontWeight: "700" }} href="#">
+                  <Link href="/signup" style={{ color: "#e35c22", fontWeight: "700" }}>
                     Sign up.
-                  </a>
+                  </Link>
                 </span>
               </div>
             </div>
