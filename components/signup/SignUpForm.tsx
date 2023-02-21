@@ -1,11 +1,22 @@
 import React from "react";
 import Link from "next/link";
+import axios from 'axios';
+import Router from "next/router";
 export default function Example() {
 
   const [isfilled, setIsFilled] = React.useState(true);
   const [isPasswordViewed, setIsPasswordViewed] = React.useState(false);
   const [isPasswordViewed2, setIsPasswordViewed2] = React.useState(false);
+  const [formSignup, setFormSignUp] = React.useState({userName: '', userRole:'QuanLi',userEmail:'',userPassword:''});
   
+  const formSignUpFecth = async(data: object)=>{
+    try {
+       await axios.post('/api/signup', data)
+       console.log((await axios.post('/api/signup', data)).status)
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <>
       <div className="m-auto h-screen  ">
@@ -56,7 +67,10 @@ export default function Example() {
                   </div>
                 </div>
 
-                <form
+                <form onSubmit={(e) => { 
+                    e.preventDefault()
+
+                 }}
                   className=" mt-5  space-y-6"
                   action="#"
                   method="POST"
@@ -71,19 +85,27 @@ export default function Example() {
                         name="name"
                         type="text"
                         required
+                        onChange={(e) => { 
+                          setFormSignUp({...formSignup, userName:e.target.value})
+                          console.log(formSignup)
+                         }}
                         className="relative block w-full placeholder-gray-300 border border-gray-300 px-7 py-2 text-gray-900 focus:z-10  focus:outline-none sm:text-sm rounded-md shadow-sm"
                         placeholder="Name"
                         style={{ borderRadius: 24 }}
                       />
                     </div>
                     <div className="py-3">
-                      <label htmlFor="phone-number" className="sr-only">
+                      <label htmlFor="user-role" className="sr-only">
                         Phone Number
                       </label>
                       <input
-                        id="phone-number"
-                        name="phone-number"
-                        type="number"
+                        id="user-role"
+                        name="userRole"
+                        type="text"
+                        onChange={(e) => { 
+                          setFormSignUp({...formSignup, userRole:e.target.value})
+                          console.log(formSignup)
+                         }}
                         required
                         className="block w-full border placeholder-gray-300 border-gray-300 px-7 py-2 text-gray-900  focus:z-10 focus:outline-none sm:text-sm rounded-md shadow-sm"
                         placeholder="Phone number"
@@ -102,10 +124,14 @@ export default function Example() {
                       </label>
                       <input
                         id="email-address"
-                        name="email"
+                        name="userEmail"
                         type="email"
                         autoComplete="email"
                         required
+                        onChange={(e) => { 
+                          setFormSignUp({...formSignup, userEmail:e.target.value})
+                          console.log(formSignup)
+                         }}
                         className="relative block w-full placeholder-gray-300 border border-gray-300 px-7 py-2 text-gray-900 focus:z-10  focus:outline-none sm:text-sm rounded-md shadow-sm"
                         placeholder="Email"
                         style={{ borderRadius: 24 }}
@@ -117,7 +143,11 @@ export default function Example() {
                       </label>
                       <input
                         id="password"
-                        name="password"
+                        name="userPassword"
+                        onChange={(e) => { 
+                          setFormSignUp({...formSignup, userPassword:e.target.value})
+                          console.log(formSignup)
+                         }}
                         type={isPasswordViewed ? "text" : "password"}
                         autoComplete="current-password"
                         required
@@ -141,11 +171,15 @@ export default function Example() {
                     </div> 
                     <div className="py-3 showPassWord">
                       <label htmlFor="confirm-password" className="sr-only">
-                        Password
+                        confirm password
                       </label>
                       <input
                         id="password"
-                        name="password"
+                        name="confirmPassword"
+                        onChange={(e) => { 
+                          setFormSignUp({...formSignup})
+                          console.log(formSignup)
+                         }}
                         type={isPasswordViewed2 ? "text" : "password"}
                         autoComplete="confirm-password"
                         required
@@ -168,18 +202,23 @@ export default function Example() {
                       </span>
                     </div>
                   </div>
-                </form>
-                
-                <div className="pt-5">
-                    <button
+                  <button
                       type="submit"
                       className="btnEffect group  flex w-full justify-center rounded-md border  bg-indigo-600 py-2 px-4 text-sm font-medium text-white focus:outline-none  mb-2"
                       onClick={() => { 
-                        setIsFilled(!isfilled)
+                        if(formSignup.userName && formSignup.userRole){
+                          setIsFilled(!isfilled)
+                          if(formSignup.userEmail && formSignup.userPassword ){
+                            formSignUpFecth(formSignup)
+                          }
+                        }
                        }}
                     >
                       {isfilled ? "Next" : "Sign up"}
                     </button>
+                </form>
+                    
+                <div className="pt-5">
 
                     <div className="flex items-center justify-between px-2 pb-5">
                       <div className="text-sm">

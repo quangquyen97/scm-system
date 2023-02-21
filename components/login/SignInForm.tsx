@@ -1,9 +1,26 @@
 import React from "react";
 import Link from "next/link";
+import axios from 'axios';
+import Router from "next/router";
 
 export default function LoginForm() {
+  
   const [isPasswordViewed, setIsPasswordViewed] = React.useState(false);
-
+  const [formLogin, setFormLogin] = React.useState({userEmail:'', userPassword:''});
+  const formSignUpFecth = async(data: object)=>{
+    try {
+       let result = await axios.post('/api/login', data)
+       if(result.status === 200){
+        Router.push('/dashboard')
+        let userToken: string = JSON.stringify(result.data.content.accessToken) 
+       console.log(result)
+        localStorage.setItem('USER_LOGIN',result.data.content)
+        JSON.parse(document.cookie=`USER_LOGIN=${userToken}`)
+       }
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <>
       <div className="m-auto h-screen  ">
@@ -15,7 +32,11 @@ export default function LoginForm() {
                   Sign in
                 </h2>
               </div>
-              <form className="mt-8 space-y-6" action="#" method="POST">
+              <form onSubmit={ (e) => { 
+                
+                e.preventDefault()
+
+               }} className="mt-8 space-y-6" action="#" method="POST" >
                 <input type="hidden" name="remember" defaultValue="true" />
                 <div className="-space-y-px">
                   <div className="py-3">
@@ -24,9 +45,13 @@ export default function LoginForm() {
                     </label>
                     <input
                       id="email-address"
-                      name="email"
+                      name="userEmail"
                       type="email"
                       autoComplete="email"
+                      onChange={(e) => { 
+                        setFormLogin({...formLogin, userEmail: e.target.value})
+                        console.log(formLogin)
+                       }}
                       required
                       className="relative block w-full placeholder-gray-300 border border-gray-300 px-7 py-2 text-gray-900 focus:z-10  focus:outline-none sm:text-sm rounded-md shadow-sm"
                       placeholder="Email"
@@ -39,7 +64,13 @@ export default function LoginForm() {
                     </label>
                     <input
                       id="password"
-                      name="password"
+                      name="userPassword"
+                      onChange={(e) => { 
+                        setFormLogin({...formLogin, userPassword: e.target.value})
+                        console.log(formLogin)
+                       
+                         
+                       }}
                       type={isPasswordViewed ? "text" : "password"}
                       autoComplete="current-password"
                       required
@@ -66,8 +97,11 @@ export default function LoginForm() {
 
                 <div>
                   <button
-                    type="submit"
+                    type="submit" 
                     className="btnEffect group  flex w-full justify-center rounded-md border  bg-indigo-600 py-2 px-4 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    onClick={() => { 
+                      formSignUpFecth(formLogin)
+                     }}
                   >
                     Sign in
                   </button>
