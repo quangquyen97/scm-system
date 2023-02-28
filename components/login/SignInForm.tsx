@@ -14,8 +14,8 @@ export default function LoginForm() {
         Router.push('/dashboard')
         let userToken: string = JSON.stringify(result.data.content.accessToken) 
        console.log(result)
-        localStorage.setItem('USER_LOGIN',result.data.content)
-        JSON.parse(document.cookie=`USER_LOGIN=${userToken}`)
+        localStorage.setItem('userToken',userToken)
+        document.cookie=`USER_LOGIN=${userToken}`
        }
     } catch (err) {
       console.log(err)

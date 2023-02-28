@@ -1,12 +1,12 @@
-import { NextApiResponse } from 'next';
 
+import { NextApiResponse, NextApiRequest } from 'next';
+import { NextResponse } from 'next/server';
 
 export interface ResponseAttributes{
   message: string,
   data: object ,
   res:object
 }
-
 
 const successCode = (res: NextApiResponse, data: object | string, message:string):any => {
     res.status(200).json({
@@ -22,10 +22,8 @@ const successCode = (res: NextApiResponse, data: object | string, message:string
     })
   }
   
-  const errorCode = (res: NextApiResponse , message:string):any => {
-    if(typeof res as unknown){
-      res.status(500).send(message)
-    }
-  }
+  const errorCode =  (res: NextApiResponse,message:string) : any => {
+   return res.status(500)
+}
   
  export  {successCode,failCode,errorCode}

@@ -11,8 +11,12 @@ export default function Example() {
   
   const formSignUpFecth = async(data: object)=>{
     try {
-       await axios.post('/api/signup', data)
-       console.log((await axios.post('/api/signup', data)).status)
+       let result = await axios.post('/api/signup', data).then((result) => { 
+
+         console.log(result)
+        }).catch((err) => { 
+          console.log(err)
+         })
     } catch (err) {
       console.log(err)
     }
@@ -98,10 +102,9 @@ export default function Example() {
                       <label htmlFor="user-role" className="sr-only">
                         Phone Number
                       </label>
-                      <input
+                      <select
                         id="user-role"
                         name="userRole"
-                        type="text"
                         onChange={(e) => { 
                           setFormSignUp({...formSignup, userRole:e.target.value})
                           console.log(formSignup)
@@ -110,13 +113,14 @@ export default function Example() {
                         className="block w-full border placeholder-gray-300 border-gray-300 px-7 py-2 text-gray-900  focus:z-10 focus:outline-none sm:text-sm rounded-md shadow-sm"
                         placeholder="Phone number"
                         style={{ borderRadius: 24 }}
-                      />
-
+                      >
+                        <option value="Role">Chọn vai trò</option>
+                        <option value="QuanLi">Quản Lí</option>
+                        <option value="Nhanvien">Nhân Viên</option>
+                        </select>
                       <div></div>
                     </div>
                   </div>
-
-                 
                   <div className={isfilled ? "hidden": "-space-y-px"}>
                     <div className="py-3">
                       <label htmlFor="email-address" className="sr-only">
@@ -206,11 +210,13 @@ export default function Example() {
                       type="submit"
                       className="btnEffect group  flex w-full justify-center rounded-md border  bg-indigo-600 py-2 px-4 text-sm font-medium text-white focus:outline-none  mb-2"
                       onClick={() => { 
-                        if(formSignup.userName && formSignup.userRole){
+                        if(formSignup.userName && formSignup.userRole !== "Role"){
                           setIsFilled(!isfilled)
                           if(formSignup.userEmail && formSignup.userPassword ){
                             formSignUpFecth(formSignup)
                           }
+                        }else{
+                          //! validation
                         }
                        }}
                     >

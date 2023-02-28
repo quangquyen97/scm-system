@@ -26,7 +26,7 @@ export default (sequelize:any, DataTypes:any) => {
       references:{
         model:'Users',
         key:'id'
-      }
+      },
     },
     PermissionId:{
       type:DataTypes.INTEGER,
