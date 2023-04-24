@@ -1,25 +1,23 @@
-import  _Permissions  from './permission';
-import {  DataTypes } from "sequelize";
-
-import _Roles from './roles'
-import _Users from './users'
+import _Type from "./type";
+import { DataTypes } from "sequelize";
+import _Roles from "./roles";
+import _Users from "./users";
 
 function initModels(sequelize: any) {
-  const Permissions = _Permissions(sequelize, DataTypes);
+  const Type = _Type(sequelize, DataTypes);
   const Roles = _Roles(sequelize, DataTypes);
   const Users = _Users(sequelize, DataTypes);
 
-  Permissions.belongsToMany(Users, { as: 'UserId_Users', through: Roles, foreignKey: "PermissionId", otherKey: "UserId" });
-  Users.belongsToMany(Permissions, { as: 'PermissionId_Permissions', through: Roles, foreignKey: "UserId", otherKey: "PermissionId" });
-  Roles.belongsTo(Permissions, { as: "Permission", foreignKey: "PermissionId"});
-  Permissions.hasMany(Roles, { as: "Roles", foreignKey: "PermissionId"});
-  Roles.belongsTo(Users, { as: "User", foreignKey: "UserId"});
-  Users.hasMany(Roles, { as: "Roles", foreignKey: "UserId"});
+  Roles.belongsTo(Users, { as: 'Roles_id', foreignKey: "id"});
+  Type.belongsTo(Users, { as: 'user_type', foreignKey: "id" });
+
+  Users.hasMany(Roles, { as: "Users_userRole", foreignKey: "id"});
+  Users.hasMany(Type, { as: "userType_Type", foreignKey: "id"});
 
   return {
-    Permissions,
+    Type,
     Roles,
     Users,
-  };
+  };  
 }
-export default initModels
+export default initModels;

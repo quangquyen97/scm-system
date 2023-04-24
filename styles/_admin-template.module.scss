@@ -1,0 +1,247 @@
+.admin {
+  width:100%;
+  &-header {
+    width: 85%;
+    background-color: $main-color;
+    height: 62px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    vertical-align: middle;
+    float: right;
+    padding-right: 30px;
+    a {
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 22px;
+      color: #ffffff;
+    }
+    > span:first-child {
+      margin-right: 15px;
+    }
+  }
+  &-nav {
+    height: 132px;
+    a {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 22px;
+    }
+    .nav-menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      vertical-align: middle;
+      padding: 10px;
+      .search-bar {
+        display: flex;
+        width: 50%;
+        position: relative;
+        input {
+          width: 100%;
+          padding: 5px;
+          border-bottom: 1px solid #808080;
+          &:focus {
+            border-color: $main-color;
+          }
+        }
+        img {
+          position: absolute;
+          right: 10px;
+          bottom: 10px;
+          z-index: 2;
+        }
+      }
+    }
+    .middle-menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      vertical-align: middle;
+      padding: 10px;
+      button {
+        padding: 11px;
+        color: #ffffff;
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 22px;
+        background-color: $main-color;
+        border-radius: 4px;
+      }
+      .modal-table {
+        position: fixed;
+        height: 100vh;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        background-color: #000000a7;
+      }
+      .search-by-tag {
+        width: 50%;
+        align-items: start;
+      }
+    }
+  }
+  table {
+    width: 100%;
+    margin: auto;
+    thead {
+      background-color: #d9d9d9;
+      tr {
+        padding: 0 20px;
+        th {
+          font-family: "Inter";
+          font-style: normal;
+          padding: 9px 0;
+          font-weight: 400;
+          font-size: 20px;
+          line-height: 22px;
+          color: #000000;
+          &:nth-child(2) {
+            text-align: start;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        text-align: center;
+        &:nth-child(even) {
+          background-color: #d9d9d9;
+        }
+        &:nth-child(odd) {
+          background-color: #ffffff;
+        }
+        td {
+          text-align: left;
+          font-family: "Inter";
+          font-style: normal;
+          font-weight: 200;
+          font-size: 17px;
+          line-height: 22px;
+          color: #000000;
+          padding: 9px 0;
+          &:nth-child(2) {
+            text-align: left;
+          }
+          &:nth-child(8) {
+            display: flex;
+            justify-content: space-around;
+          }
+          button {
+            font-size: 15px;
+            font-weight: 400;
+            color: white;
+          }
+          .del-btn,
+          .edit-btn,
+          .view-btn {
+            &:hover {
+              background: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.hidden-modal {
+  display: none;
+  transition: all 0.5s linear;
+  &::after {
+    display: block;
+    transition: all 0.5s linear;
+  }
+}
+
+//MODAL CSS
+
+//! DELETE
+.modal-dialog {
+  top: 10%;
+  border-radius: 20px;
+  .modal-header {
+    background-color: $warning-color;
+    h1 {
+      color: white;
+    }
+  }
+  .del-user-button {
+    background-color: $warning-color;
+    font-size: 14px;
+    padding: 6px 21px;
+    border-radius: 5px;
+    font-family: "Inter";
+  }
+  .cancel-button {
+    color: black;
+    background: none;
+    margin-right: 20px;
+  }
+  .btn-close {
+    display: none;
+  }
+  img {
+    display: inline;
+  }
+}
+
+//! UPDATE
+.edit-user {
+  .modal-dialog {
+    .modal-header {
+      background-color: #ffffff;
+      h1 {
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 28px;
+        text-transform: uppercase;
+        color: #006c84;
+      }
+    }
+  }
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  color: #262626;
+}
+//! CREATE
+#createRoleModal {
+  width: 100vw;
+  height: 100vh;
+  .modal-dialog {
+    margin: auto;
+    .modal-content {
+      // width: 60vw;
+      height: max-content;
+      margin: auto;
+      padding-bottom: 50px;
+    }
+    overflow: unset;
+  }
+}
+
+//! USER DETAIL
+
+
+#block-drop .block{
+  inset: -24px auto auto -13px!important;
+}
+.css-1fdsijx-ValueContainer{
+    font-size: 12px;
+    option{
+      font-size: 13px;
+    }
+  
+  }
+ .css-1nmdiq5-menu{
+    font-size: 13px;
+  }

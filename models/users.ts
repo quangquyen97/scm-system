@@ -1,38 +1,54 @@
 "use strict";
-import { Model } from "sequelize";
-
+import { Model, DataTypes } from "sequelize";
 export interface UserAttributes {
   id: number;
-  userName: string;
+  userType: number[];
   userEmail: string;
   userPassword: string;
-  userRole: string;
+  userRole: number[];
+  userPhoneNumber: number;
+  userFirstName: string;
+  userLastName: string;
+  userDob: Date;
+  userAdress: string;
+  relatedUser: string;
+  relatedType: string;
 }
-export default  (sequelize: any, DataTypes: any) => {
+export default (sequelize: any, DataTypes: any) => {
   class Users extends Model<UserAttributes> implements UserAttributes {
     id!: number;
-    userName!: string;
+    userType!: number[];
     userEmail!: string;
     userPassword!: string;
-    userRole!: string;
+    userRole!: number[];
+    userPhoneNumber!: number;
+    userFirstName!: string;
+    userLastName!: string;
+    userDob!: Date;
+    userAdress!: string;
+    relatedUser!: string;
+    relatedType!: string;
     static associate(models: any) {
-      Users.belongsToMany(models.Permission, {
-        through: "Roles",
-      });
+      Users.hasMany(models.Type);
+      Users.hasMany(models.Roles);
     }
   }
   Users.init(
     {
       id: {
         type: DataTypes.INTEGER,
-        // defaultValue: UUIDV4,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
-      userName: {
-        type: DataTypes.STRING,
+      userType: {
+        type: DataTypes.INTEGER,
         allowNull: false,
+        primaryKey: true,
+        references: {
+          model: "Type",
+          key: "id",
+        },
       },
       userEmail: {
         type: DataTypes.STRING,
@@ -44,6 +60,38 @@ export default  (sequelize: any, DataTypes: any) => {
         allowNull: false,
       },
       userRole: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Roles",
+          key: "id",
+        },
+      },
+      userPhoneNumber: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      userFirstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      userLastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      userDob: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      userAdress: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      relatedUser: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      relatedType: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -51,6 +99,7 @@ export default  (sequelize: any, DataTypes: any) => {
     {
       sequelize,
       modelName: "Users",
+      timestamps: false,
     }
   );
   return Users;
