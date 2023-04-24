@@ -1,0 +1,30 @@
+
+
+.parent-center-table {
+  position: relative;
+  .center-table-hoc {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .info-required {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 22px;
+      color: #262626;
+      &::after{
+        padding-left: 5px;
+        content: "(Required)";
+        color: $warning-color;
+      }
+    }
+  }
+}
+
+.validation-info{
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 22px;
+  color: $warning-color;
+}

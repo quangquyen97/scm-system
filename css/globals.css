@@ -1,0 +1,437 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/Inter/Inter-Black.ttf");
+  font-style: normal;
+  font-display: swap;
+  font-weight: 900;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/Inter/Inter-Bold.ttf");
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/Inter/Inter-ExtraBold.ttf");
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/Inter/Inter-ExtraLight.ttf");
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/Inter/Inter-Light.ttf");
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/Inter/Inter-Medium.ttf");
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/Inter/Inter-Regular.ttf");
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/Inter/Inter-SemiBold.ttf");
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/Inter/Inter-Thin.ttf");
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100;
+}
+* {
+  font-family: "Inter", sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.admin {
+  width: 100%;
+}
+.admin-header {
+  width: 85%;
+  background-color: #0A5F59;
+  height: 62px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  vertical-align: middle;
+  float: right;
+  padding-right: 30px;
+}
+.admin-header a {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 22px;
+  color: #ffffff;
+}
+.admin-header > span:first-child {
+  margin-right: 15px;
+}
+.admin-nav {
+  height: 132px;
+}
+.admin-nav a {
+  font-family: "Inika";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 22px;
+}
+.admin-nav .nav-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+.admin-nav .nav-menu .search-bar {
+  display: flex;
+  width: 50%;
+  position: relative;
+}
+.admin-nav .nav-menu .search-bar input {
+  width: 100%;
+  padding: 5px;
+  border-bottom: 1px solid #808080;
+}
+.admin-nav .nav-menu .search-bar input:focus {
+  border-color: #0A5F59;
+}
+.admin-nav .nav-menu .search-bar img {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+}
+.admin-nav .middle-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+.admin-nav .middle-menu button {
+  padding: 11px;
+  color: #ffffff;
+  font-family: "Inika";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 22px;
+  background-color: #0A5F59;
+  border-radius: 4px;
+}
+.admin-nav .middle-menu .modal-table {
+  position: fixed;
+  height: 100vh;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.6549019608);
+}
+.admin-nav .middle-menu .search-by-tag {
+  width: 50%;
+  align-items: start;
+}
+.admin table {
+  width: 100%;
+  margin: auto;
+}
+.admin table thead {
+  background-color: #d9d9d9;
+}
+.admin table thead tr {
+  padding: 0 20px;
+}
+.admin table thead tr th {
+  font-family: "Inika";
+  font-style: normal;
+  padding: 9px 0;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 22px;
+  color: #000000;
+}
+.admin table thead tr th:nth-child(2) {
+  text-align: start;
+}
+.admin table tbody tr {
+  text-align: center;
+}
+.admin table tbody tr:nth-child(even) {
+  background-color: #d9d9d9;
+}
+.admin table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+.admin table tbody tr td {
+  text-align: left;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 200;
+  font-size: 17px;
+  line-height: 22px;
+  color: #000000;
+  padding: 9px 0;
+}
+.admin table tbody tr td:nth-child(2) {
+  text-align: left;
+}
+.admin table tbody tr td:nth-child(8) {
+  display: flex;
+  justify-content: space-around;
+}
+.admin table tbody tr td button {
+  font-size: 15px;
+  font-weight: 400;
+  color: white;
+}
+.admin table tbody tr td .del-btn:hover,
+.admin table tbody tr td .edit-btn:hover,
+.admin table tbody tr td .view-btn:hover {
+  background: none;
+}
+
+.hidden-modal {
+  display: none;
+  transition: all 0.5s linear;
+}
+.hidden-modal::after {
+  display: block;
+  transition: all 0.5s linear;
+}
+
+.modal-dialog {
+  top: 10%;
+  border-radius: 20px;
+}
+.modal-dialog .modal-header {
+  background-color: #9c4141;
+}
+.modal-dialog .modal-header h1 {
+  color: white;
+}
+.modal-dialog .del-user-button {
+  background-color: #9c4141;
+  font-size: 14px;
+  padding: 6px 21px;
+  border-radius: 5px;
+  font-family: inherit;
+}
+.modal-dialog .cancel-button {
+  color: black;
+  background: none;
+  margin-right: 20px;
+}
+.modal-dialog .btn-close {
+  display: none;
+}
+.modal-dialog img {
+  display: inline;
+}
+
+.edit-user .modal-dialog .modal-header {
+  background-color: #ffffff;
+}
+.edit-user .modal-dialog .modal-header h1 {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+  text-transform: uppercase;
+  color: #006c84;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  color: #262626;
+}
+
+#createRoleModal {
+  width: 100vw;
+  height: 100vh;
+}
+#createRoleModal .modal-dialog {
+  margin: auto;
+  overflow: unset;
+}
+#createRoleModal .modal-dialog .modal-content {
+  height: max-content;
+  margin: auto;
+  padding-bottom: 50px;
+}
+
+#block-drop .block {
+  inset: -24px auto auto -13px !important;
+}
+
+.css-1fdsijx-ValueContainer {
+  font-size: 12px;
+}
+.css-1fdsijx-ValueContainer option {
+  font-size: 13px;
+}
+
+.css-1nmdiq5-menu {
+  font-size: 13px;
+}
+
+input:focus {
+  border-color: #0A5F59;
+  z-index: 1;
+}
+
+.aEffect {
+  transition: all 0.3s ease-in-out;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #262626;
+}
+.aEffect:hover {
+  color: #0A5F59;
+}
+
+.aEffectContrast {
+  transition: all 0.3s ease-in-out;
+}
+.aEffectContrast:hover {
+  color: #FDCB17;
+}
+
+.btnEffect {
+  background: linear-gradient(90.36deg, #0A5F59 0%, rgba(224, 121, 47, 0) 154.04%);
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 22px;
+  transition: all 0.5s ease-in-out;
+}
+
+button:hover {
+  background-color: #0A5F59;
+}
+
+.showPassWord {
+  position: relative;
+}
+.showPassWord span {
+  position: absolute;
+  right: 15px;
+  top: 35%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #8e44ad;
+  cursor: pointer;
+  z-index: 10;
+}
+.showPassWord span img {
+  width: 25px;
+  opacity: 50%;
+}
+
+.parent-center-table {
+  position: relative;
+}
+.parent-center-table .center-table-hoc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.parent-center-table .center-table-hoc .info-required {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  color: #262626;
+}
+.parent-center-table .center-table-hoc .info-required::after {
+  padding-left: 5px;
+  content: "(Required)";
+  color: #9c4141;
+}
+
+.validation-info {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 22px;
+  color: #9c4141;
+}
+
+.main {
+  width: 100vw;
+  height: 100vh;
+}
+.main .side-bar {
+  width: 15%;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: #252B42;
+}
+.main-dashboard {
+  width: 85%;
+  float: right;
+  padding: 15px;
+}
+
+aside {
+  position: relative;
+  z-index: 0;
+}
+aside .side-bar-hover {
+  padding-left: 30px;
+  position: absolute;
+  top: 0;
+  padding-top: 100px;
+  background-color: white;
+  left: -100px;
+  height: 100vh;
+  z-index: 1;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  padding-right: 30px;
+  transition: all 0.5s ease;
+}
+aside .side-bar-fixed {
+  width: 88px;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  position: fixed;
+  z-index: 2;
+  background: #0A5F59;
+}
+aside .side-bar-fixed:hover .side-bar-hover {
+  left: 180px;
+  transition: all 0.5s ease;
+}/*# sourceMappingURL=globals.css.map */
