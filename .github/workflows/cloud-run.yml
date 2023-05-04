@@ -5,6 +5,7 @@ on:
           branches:
             - master
             - main
+           
 
 env:
     PROJECT_ID: ${{ secret.CLOUD_RUN_PROJECT_NAME }}
@@ -12,7 +13,7 @@ env:
     REPO_NAME: scm-system
 
 jobs: 
-  buld-and-deploy:
+  build-and-deploy:
     name: Setup, Build, and Deploy
     runs-on: ubuntu-lastest
     steps:
