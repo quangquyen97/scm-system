@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p $PORT",
+       "ci": "yarn install --frozen-lockfile"
   },
   "dependencies": {
     "@react-next-calendar/core": "^1.0.2",
