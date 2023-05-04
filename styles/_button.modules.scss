@@ -1,0 +1,57 @@
+input:focus {
+  border-color: $main-color;
+  z-index: 1;
+}
+
+.aEffect {
+  transition: all 0.3s ease-in-out;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #262626;
+  &:hover {
+    color: $main-color;
+  }
+}
+.aEffectContrast {
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    color: $contrast-color;
+  }
+}
+
+.btnEffect {
+  background: linear-gradient(
+    90.36deg,
+    $main-color 0%,
+    rgba(224, 121, 47, 0) 154.04%
+  );
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 22px;
+  transition: all 0.5s ease-in-out;
+}
+
+button:hover {
+  background-color: $main-color;
+}
+
+.showPassWord {
+  position: relative;
+
+  span {
+    position: absolute;
+    right: 15px;
+    top: 35%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #8e44ad;
+    cursor: pointer;
+    z-index: 10;
+    img {
+      width: 25px;
+      opacity: 50%;
+    }
+  }
+}
