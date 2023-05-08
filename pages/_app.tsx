@@ -8,19 +8,27 @@ import Layout from "../components/Layout";
 import Dashboard from "../components/dashboard/Dashboard";
 import Sidebar from "../components/main-template/Sidebar";
 import Header from "../components/main-template/Header";
+import jwt from 'jsonwebtoken'
+
+
+
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [isLogin, setIsLogin] = useState(false);
   
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap");
-    if (typeof document !== "undefined") {
     
+   
+    if (typeof document !== "undefined") {
       const cookieValue = document?.cookie
         .split("; ")
         .find((row) => row.startsWith("USER_LOGIN="))
         ?.split("=")[1];
       console.log(cookieValue, "cokie");
+
       if (cookieValue) {
+        jwt.decode(cookieValue)
         setIsLogin(true);
       }
     }
@@ -47,4 +55,5 @@ function MyApp({ Component, pageProps }: AppProps) {
     </div>
   );
 }
+
 export default MyApp;

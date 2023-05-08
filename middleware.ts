@@ -1,20 +1,15 @@
 import { verifyAuth } from "./lib/auth";
 import { NextRequest, NextResponse } from "next/server";
+import jwt from 'jsonwebtoken'
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("USER_LOGIN")?.value;
   console.log(token, "token");
-  // if(token){
-  //   JSON.parse(token).bcry
 
-  // }
   const verifiedToken =
-    token &&
-    (await verifyAuth(token.replace('"', "")).catch((err: any) => {
-    }));
+    token && (await verifyAuth(token.replace('"', "")).catch((err: any) => {}));
   if (req.nextUrl.pathname.startsWith("/login") && !verifiedToken) {
-
-    return 
+    return;
   }
 
   if (req.url.includes("/login") && verifiedToken) {
@@ -27,5 +22,13 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/login",'/create-user','/admin-template','/role','/type','/account-info'],
+  matcher: [
+    "/dashboard",
+    "/login",
+    "/create-user",
+    "/admin-template",
+    "/role",
+    "/type",
+    "/account-info",
+  ],
 };
