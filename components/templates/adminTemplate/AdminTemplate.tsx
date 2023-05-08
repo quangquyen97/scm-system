@@ -46,10 +46,10 @@ function AdminTemplate() {
   const [relaType, setRelaType] = React.useState({ relaType: [] });
   const [relaUser, setRelaUser] = React.useState({ relaUser: [] });
   const [formSignup, setFormSignUp] = React.useState({
-    userType: 0,
+    userType:[""],
     userEmail: "",
     userPassword: "",
-    userRole: 0,
+    userRole: [""],
     userPhoneNumber: "",
     userFirstName: "",
     userLastName: "",
@@ -98,7 +98,13 @@ function AdminTemplate() {
   const getAllUser = async () => {
     const { data: res } = await axios.get("/api/userApi/get-all-user");
     setUsers(res.content);
-    console.log(res.content);
+  //  let dataUser =  res.content.filter((typeUser:any) => { 
+  //     return typeUser.userType >= typeFilter.map((level: any) => { 
+  //       return level.typeLevel
+  //      })
+  //    })
+  //    console.log(dataUser,'dataUser')
+  
   };
   const [isPasswordViewed, setIsPasswordViewed] = React.useState(false);
   const [isPasswordViewed2, setIsPasswordViewed2] = React.useState(false);
@@ -162,14 +168,14 @@ function AdminTemplate() {
     userFirstName: string().required().min(2).max(12),
     userLasName: string().required().min(2).max(50),
   });
-  let pointArr = [{ point: "point" }];
+  
   const getUserDetail = async (id: object) => {
     let result = await axios.post("/api/userApi/get-all-user", id);
     console.log(result.data);
     setUserDetail(result.data.content.dataUsers);
     setRoles(result.data.content.roleData[0].rolePermission.split(","));
     setRoleDetail(result.data.content.roleData[0].roleDescription);
-    console.log(result.data.content.roleData[0].roleDescription, "dataNeew");
+ 
   };
   const getTypeDetail = async (id: any) => {
     await axios
@@ -233,6 +239,17 @@ function AdminTemplate() {
             icon: "success",
           });
           getAllUser();
+          setFormSignUp({userType:[""],
+          userEmail: "",
+          userPassword: "",
+          userRole: [""],
+          userPhoneNumber: "",
+          userFirstName: "",
+          userLastName: "",
+          userDob: "",
+          userAdress: "",
+          relatedUser: [""],
+          relatedType: [""],})
         })
         .catch((err) => {
           alert(`${err.response.data.message}`);
@@ -253,26 +270,38 @@ function AdminTemplate() {
         console.log(err);
       });
   };
+  const [typeFilter,setTypeFilter] =React.useState([]);
   const [type, setType] = React.useState([]);
-  const getType = async () => {
+  const getType = async (id:any) => {
+    let typeFilter:any =[]
+    await axios
+    .put("/api/typeApi/get-all-type",{id})
+    .then((result) => {
+      typeFilter.push(result.data.content[0])
+      console.log(typeFilter,'typeFilter')
+
+      setTypeFilter(typeFilter)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
     await axios
       .get("/api/typeApi/get-all-type")
       .then((result) => {
-        setType(result.data.content);
-        console.log(result, "type result");
+        setType(result.data.content.filter((lv:any) =>
+        {
+          return lv.typeLevel >= typeFilter[0].typeLevel
+        } )
+         );
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const typeOptionEdit = [
-    type?.map((type: any, index: number) => {
-      return { value: `${type.id}`, label: `${type.typeName}` };
-    }),
-  ];
+ 
 
-  // const rolesOption:any = [{value: roles.map((item) => item),label:roles.map((item) =>  item )}]
+
 
   const [sort, setSort] = useState("ASC");
   const sorting = (col: any) => {
@@ -313,44 +342,33 @@ function AdminTemplate() {
     }),
   ];
 
-  //  const roleOptionEdit = [
-  //     role?.map((rol: any, index: number) => {
-  //      rol.roleScopes?.filter((roleScopes:any) =>  roleScopes.includes(userRoleDetail)).map((scope:any) => {
-  //        return { value: `${rol.id}`, label: `${rol.roleName}` };
-  //      })
-  //      0;
-  //     }),
-  //   ];
+
   const roleOptionEdit = [
-    // role?.filter((obj:any) => {
-    //   console.log(userRoleDetail)
-    //  obj.roleScopes.includes(userRoleDetail).map((rol:any)=> { return { value: `${rol.id}`, label: `${rol.roleName}` };})}).
-    role
-      ?.filter((rol: any) => rol.roleScopes.includes(userRoleDetail))
+    role?.filter((rol: any) => rol.roleScopes.includes(userRoleDetail))
       .map((obj: any) => {
         return { value: obj.id, label: obj.roleName };
       }),
   ];
 
-  console.log(roleOptionEdit);
-  // const roleOptionEdit = [
-  //   role?.map((rol: any, index: number) => {
-  //     if(rol.roleScopes.includes(userRoleDetail)){
-  //       return { value: `${rol.id}`, label: `${rol.roleName}` };
-  //     }
-  //     return { value: `0`, label: `0` };
-  //   }),
-  // ];
-  console.log(roleOptionEdit, "finish");
+  const typeOptionEdit = [
+    type?.map((type: any, index: number) => {
+      return { value: `${type.id}`, label: `${type.typeName}` };
+    }),
+  ];
+  const [id,setId] = React.useState({})
   React.useEffect(() => {
     getAllUser();
     getRole();
-    getType();
     if (localStorage.getItem("userToken")) {
       let dataInfo = JSON.parse(`${localStorage.getItem("userToken")}`);
       let info: any = decode(dataInfo);
       getUserRoleDetail({ id: info.data.id });
+      setId( info.data.id)
+      console.log( info.data.id,' info.data.id')
+      getType(  info.data.id);
     }
+   
+   
   }, []);
 
   return (
@@ -506,8 +524,8 @@ function AdminTemplate() {
                                 autoComplete="current-password"
                                 required
                                 className=" block w-full border placeholder-gray-300 border-gray-300 px-7 py-2 text-gray-900  focus:z-10 focus:outline-none sm:text-sm rounded-md shadow-sm"
-                                placeholder="User's last name"
-                                style={{ borderRadius: 4 }}
+                                placeholder="User's Adress"
+                                style={{ borderRadius: 4}}
                               />
                             </div>
                             <label
@@ -625,26 +643,41 @@ function AdminTemplate() {
                               </label>
 
                               <Select
+                                isMulti={true}
                                 options={roleOptionEdit[0]}
                                 className="w-100 rounded-md shadow-sm mb-1  "
                                 components={animatedComponents}
                                 onChange={async (e: any) => {
                                   setFormSignUp({
                                     ...formSignup,
-                                    userRole: e.value,
+                                    userRole: e.map((item:any) => 
+                                    {
+                                      return item.value
+                                    }),
                                   });
-                                  getRoleDetail({ id: e.value });
+                                  console.log(formSignup,'user')
+                                  console.log(e.map((item:any) => {
+                                    return  item.value }),'e')
+                                  getRoleDetail({ id: e.map((item:any) => { 
+                                    return item.value }) });
 
                                   let result = await axios
                                     .post("/api/roleApi/role-detail", {
-                                      userRole: e.value,
+                                      userRole: e.map((item: any) => {
+                                        return item.value;
+                                      }),
                                     })
                                     .then((result) => {
                                       setRelaUser({
-                                        ...relaType,
-                                        relaUser: result.data.content,
+                                        ...relaUser,
+                                        relaUser: result.data.content.map(
+                                          (item: any) => {
+                                            return item
+                                          }
+                                        ),
                                       });
-                                      console.log(result.data.content);
+                                     console.log(relaUser,'user')
+                                     
                                     })
                                     .catch((err) => {
                                       console.log(err);
@@ -665,27 +698,38 @@ function AdminTemplate() {
                                 className="w-100 rounded-md shadow-sm mb-1 "
                                 options={typeOptionEdit[0]}
                                 components={animatedComponents}
+                                isMulti={true}
                                 onChange={async (e: any) => {
                                   setFormSignUp({
                                     ...formSignup,
-                                    userType: Number(e.value),
+                                    userType: e.map((item:any) => {
+                                      return item.value
+                                    }),
                                   });
-
-                                  console.log(formSignup, "select role");
+                                  console.log(e,'e')
+                         
                                   await axios
                                     .put("/api/userApi/signup", {
-                                      userType: e.value,
+                                      id:id,
+                                      userType: e.map((item: any) => {
+                                        return item.value;
+                                      })
                                     })
                                     .then((result) => {
-                                      console.log(result.data, "type nef");
                                       setRelaType({
                                         ...relaType,
-                                        relaType: result.data.content,
+                                        relaType: result.data.content.map(
+                                          (item: any) => {
+                                            return item
+                                          }
+                                        ),
                                       });
+                                      console.log(relaType,'type')
                                     })
                                     .catch((err) => {
                                       console.log(err);
                                     });
+                                
                                 }}
                                 placeholder="Select Type"
                               />
@@ -695,12 +739,7 @@ function AdminTemplate() {
                         <div className="px-3">
                           {rol.includes("type") || rol.includes("all") ? (
                             <div
-                              style={{
-                                maxHeight: 200,
-                                overflow: "hidden",
-                                overflowY: "scroll",
-                                width: "100%",
-                              }}
+                            
                             >
                               <label
                                 htmlFor="relatedType"
@@ -709,9 +748,18 @@ function AdminTemplate() {
                                 Related Type
                               </label>
 
-                              <div className="pb-3">
-                                <table>
-                                  <thead>
+                              <div className="pb-3" style={{
+                              maxHeight: 200,
+                              overflow: "hidden",
+                              overflowY: "scroll",
+                              width: "100%",
+                            }}>
+                                <table style={{position:'relative'}}>
+                                  <thead    style={{
+                              position:"sticky",
+                              top:0,
+                              width:"100%"
+                              }}>
                                     <tr>
                                       <th style={{ fontSize: 12 }}>Select</th>
                                       <th style={{ fontSize: 12 }}>Stt</th>
@@ -729,37 +777,40 @@ function AdminTemplate() {
                                   </thead>
                                   <tbody>
                                     {relaType.relaType
-                                      ? relaType.relaType?.map(
-                                          (item: any, index: number) => {
-                                            return (
-                                              <tr key={item.id}>
-                                                <td>
-                                                  <input
-                                                    name="relaType"
-                                                    type="checkbox"
-                                                    value={item.id}
-                                                    onChange={
-                                                      handleChangeChecked
-                                                    }
-                                                  />
-                                                </td>
-                                                <td style={{ fontSize: 12 }}>
-                                                  {index++}
-                                                </td>
-                                                <td style={{ fontSize: 12 }}>
-                                                  {item.userFirstName}
-                                                </td>
-                                                <td style={{ fontSize: 12 }}>
-                                                  {item.userLastName}
-                                                </td>
-                                                <td style={{ fontSize: 12 }}>
-                                                  {item.userEmail}
-                                                </td>
-                                                <td style={{ fontSize: 12 }}>
-                                                  {item.userPhoneNumber}
-                                                </td>
-                                              </tr>
-                                            );
+                                      ? relaType.relaType.map(
+                                          (item: any) => {
+                                            let a = 1;
+                                            return item.map((user:any,index:number) => { 
+                                              return (
+                                                <tr key={user.id}>
+                                                  <td>
+                                                    <input
+                                                      name="relaType"
+                                                      type="checkbox"
+                                                      value={user.id}
+                                                      onChange={
+                                                        handleChangeChecked
+                                                      }
+                                                    />
+                                                  </td>
+                                                  <td style={{ fontSize: 12 }}>
+                                                    {a++}
+                                                  </td>
+                                                  <td style={{ fontSize: 12 }}>
+                                                    {user.userFirstName}
+                                                  </td>
+                                                  <td style={{ fontSize: 12 }}>
+                                                    {user.userLastName}
+                                                  </td>
+                                                  <td style={{ fontSize: 12 }}>
+                                                    {user.userEmail}
+                                                  </td>
+                                                  <td style={{ fontSize: 12 }}>
+                                                    {user.userPhoneNumber}
+                                                  </td>
+                                                </tr>
+                                              );
+                                             })
                                           }
                                         )
                                       : null}
@@ -767,16 +818,14 @@ function AdminTemplate() {
                                 </table>
                               </div>
                             </div>
-                          ) : null}
+                            
+                          ) :   
+                         ""
+                         }
 
                           {rol.includes("point") || rol.includes("all") ? (
                             <div
-                              style={{
-                                maxHeight: 200,
-                                overflow: "hidden",
-                                overflowY: "scroll",
-                                width: "100%",
-                              }}
+                            
                             >
                               <label
                                 htmlFor="relatedUser"
@@ -784,9 +833,18 @@ function AdminTemplate() {
                               >
                                 Related User
                               </label>
-                              <div className="pb-3">
+                              <div className="pb-3"   style={{
+                                maxHeight: 200,
+                                overflow: "hidden",
+                                overflowY: "scroll",
+                                width: "100%",
+                              }}>
                                 <table>
-                                  <thead>
+                                  <thead   style={{
+                              position:"sticky",
+                              top:0,
+                              width:"100%"
+                              }}>
                                     <tr>
                                       <th style={{ fontSize: 12 }}>Select</th>
                                       <th style={{ fontSize: 12 }}>Stt</th>
@@ -805,36 +863,38 @@ function AdminTemplate() {
                                   <tbody>
                                     {relaUser.relaUser
                                       ? relaUser.relaUser.map(
-                                          (item: any, index: number) => {
-                                            return (
-                                              <tr key={item.id}>
-                                                <td>
-                                                  <input
-                                                    name="relaUser"
-                                                    type="checkbox"
-                                                    value={item.id}
-                                                    onChange={
-                                                      handleChangeChecked
-                                                    }
-                                                  />
-                                                </td>
-                                                <td style={{ fontSize: 12 }}>
-                                                  {index++}
-                                                </td>
-                                                <td style={{ fontSize: 12 }}>
-                                                  {item.userFirstName}
-                                                </td>
-                                                <td style={{ fontSize: 12 }}>
-                                                  {item.userLastName}
-                                                </td>
-                                                <td style={{ fontSize: 12 }}>
-                                                  {item.userEmail}
-                                                </td>
-                                                <td style={{ fontSize: 12 }}>
-                                                  {item.userPhoneNumber}
-                                                </td>
-                                              </tr>
-                                            );
+                                          (item: any) => {
+                                            return item.map((user:any,index:number) => { 
+                                              return (
+                                                <tr key={user.id}>
+                                                  <td>
+                                                    <input
+                                                      name="relaUser"
+                                                      type="checkbox"
+                                                      value={user.id}
+                                                      onChange={
+                                                        handleChangeChecked
+                                                      }
+                                                    />
+                                                  </td>
+                                                  <td style={{ fontSize: 12 }}>
+                                                    {index++}
+                                                  </td>
+                                                  <td style={{ fontSize: 12 }}>
+                                                    {user.userFirstName}
+                                                  </td>
+                                                  <td style={{ fontSize: 12 }}>
+                                                    {user.userLastName}
+                                                  </td>
+                                                  <td style={{ fontSize: 12 }}>
+                                                    {user.userEmail}
+                                                  </td>
+                                                  <td style={{ fontSize: 12 }}>
+                                                    {user.userPhoneNumber}
+                                                  </td>
+                                                </tr>
+                                              );
+                                             })
                                           }
                                         )
                                       : null}
@@ -842,7 +902,10 @@ function AdminTemplate() {
                                 </table>
                               </div>
                             </div>
-                          ) : null}
+                           
+                          ) :
+                        ""
+                      }
                         </div>
 
                         <div className="modal-footer">
