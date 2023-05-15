@@ -1,9 +1,10 @@
+
 import { verifyAuth } from "./lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
+
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("USER_LOGIN")?.value;
-  console.log(token, "token");
 
   const verifiedToken =
     token &&

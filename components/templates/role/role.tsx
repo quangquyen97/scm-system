@@ -6,6 +6,7 @@ import makeAnimated from "react-select/animated";
 import swal from "sweetalert";
 import { decode } from "../../../middleware/auth";
 import { Label } from "flowbite-react";
+import Pagination from "../../panigation";
 
 const animatedComponents = makeAnimated();
 const RolePermOption = [
@@ -154,6 +155,15 @@ function Role() {
   let scopeByUser = scope[0];
 
   const sealValue = seal[0];
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const rolePerPage = 5;
+  const lastIndex = currentPage * rolePerPage;
+  const firstIndex = lastIndex - rolePerPage;
+  const rolePagi = role.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(role.length / rolePerPage);
+  const numbers = [...Array(npage + 1).keys()].slice(1);
+
   useEffect(() => {
     getRole();
   }, []);
@@ -199,7 +209,7 @@ function Role() {
             <div className="middle-menu">
               <div>
                 <div className="btn-create relative">
-                <span>All ({role.length})</span>
+                  <span>All ({role.length})</span>
                   <button
                     data-bs-toggle="modal"
                     data-bs-target="#createRoleModal"
@@ -444,7 +454,7 @@ function Role() {
               </tr>
             </thead>
             <tbody>
-              {role
+              {rolePagi
                 ?.filter((item: any) => {
                   return search.toLowerCase() === ""
                     ? item
@@ -572,6 +582,13 @@ function Role() {
                 })}
             </tbody>
           </table>
+            <Pagination
+              currentPage={currentPage}
+              changePage={changePage}
+              prePage={prePage}
+              numbers={numbers}
+              nextPage={nextPage}
+            />
           <div>
             <div
               className="modal fade edit-user w-full"
@@ -836,6 +853,19 @@ function Role() {
       </div>
     </>
   );
+  function prePage() {
+    if (currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+  function changePage(n: number) {
+    setCurrentPage(n);
+  }
+  function nextPage() {
+    if (currentPage !== npage) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
 }
 
 export default Role;

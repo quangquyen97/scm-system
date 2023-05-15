@@ -1,13 +1,12 @@
-import Router from "next/router";
+
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import "bootstrap/dist/css/bootstrap.css";
 import { useEffect, useState } from "react";
 import "flowbite";
-import Layout from "../components/Layout";
-import Dashboard from "../components/dashboard/Dashboard";
 import Sidebar from "../components/main-template/Sidebar";
 import Header from "../components/main-template/Header";
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [isLogin, setIsLogin] = useState(false);
 
