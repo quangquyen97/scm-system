@@ -6,6 +6,7 @@ import makeAnimated from "react-select/animated";
 import swal from "sweetalert";
 import { decode } from "../../../middleware/auth";
 import Pagination from "../../panigation";
+import { RoleScopes } from '../../../models/roles';
 const animatedComponents = makeAnimated();
 const RolePermOption = [
   { value: "perUser_view", label: "USER_VIEW" },
@@ -132,7 +133,7 @@ function AdminTemplate() {
   console.log(search);
   const [roles, setRoles] = React.useState([]);
   const [roleDetail, setRoleDetail] = React.useState([]);
-  const [rol, setRol]: any[] = React.useState([""]);
+  const [rol, setRol] = React.useState([""]);
   let userInfo = {
     userDayOfBirth: "",
     userFirstName: "",
@@ -172,6 +173,7 @@ function AdminTemplate() {
       .then((result) => {
         console.log(result, "getTypeDetail");
         setTypeDetail(result.data.content);
+        console.log(result.data.content,'result.data.content')
         console.log(result.data.content, "id");
         console.log(typeDetail, "typeName");
       })
@@ -183,8 +185,9 @@ function AdminTemplate() {
     await axios
       .put("/api/roleApi/role-detail", id)
       .then((result) => {
-        console.log(result, "role");
-        setRol(result.data.content);
+        console.log(result.data.content[0], "role");
+        setRol(result.data.content[0].roleScopes);
+
       })
       .catch((err) => {
         console.log(err, "ees");
@@ -270,7 +273,7 @@ function AdminTemplate() {
       .put("/api/typeApi/get-all-type", { id })
       .then((result) => {
         typeFilter.push(result.data.content[0]);
-        console.log(typeFilter, "typeFilter");
+        console.log(result, "typeFilter");
 
         setTypeFilter(typeFilter);
       })
@@ -280,6 +283,7 @@ function AdminTemplate() {
     await axios
       .get("/api/typeApi/get-all-type")
       .then((result) => {
+        console.log(result,'')
         setType(
           result.data.content.filter((lv: any) => {
             return lv.typeLevel >= typeFilter[0].typeLevel;
@@ -343,6 +347,7 @@ function AdminTemplate() {
       return { value: `${type.id}`, label: `${type.typeName}` };
     }),
   ];
+  console.log(type, 'typeeeeee')
 
   const [id, setId] = React.useState({});
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -649,7 +654,7 @@ function AdminTemplate() {
                                       return item.value;
                                     }),
                                   });
-                                  console.log(formSignup, "user");
+                                  console.log(rol, "user");
                                   console.log(
                                     e.map((item: any) => {
                                       return item.value;
@@ -706,7 +711,7 @@ function AdminTemplate() {
                                       return item.value;
                                     }),
                                   });
-                                  console.log(e, "e");
+                                  console.log(rol, "esđsds");
 
                                   await axios
                                     .put("/api/userApi/signup", {
@@ -966,7 +971,7 @@ function AdminTemplate() {
               </div>
             </div>
           </div>
-          <table className="table-auto ">
+          <table className="table-auto " style={{minHeight:"273px"}}>
             <thead>
               <tr>
                 <th>STT</th>
@@ -1012,7 +1017,7 @@ function AdminTemplate() {
                 <th>More</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               {usersPagi
                 ?.filter((item: any) => {
                   return search.toLowerCase() === ""
@@ -1023,7 +1028,7 @@ function AdminTemplate() {
                   return (
                     <tr key={user.id}>
                       <td className="text-start">{index}</td>
-                      <td>{user.userFirstName}</td>
+                      <td >{user.userFirstName}</td>
                       <td style={{ textAlign: "start" }}>{user.userEmail}</td>
                       <td>{user.userDob.replace("T00:00:00.000Z", "")}</td>
                       <td>{user.userPhoneNumber}</td>

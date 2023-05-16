@@ -130,8 +130,9 @@ function Role() {
       .put("/api/roleApi/role-detail", data)
       .then((result) => {
         console.log(result);
-        console.log(data, "data");
-        setRoleDetail(result.data.content[0]);
+        console.log(roleDetail, "data");
+        setRoleDetail(result.data.content);
+        
         setId(result.data.content[0]);
         setUserScope(result.data.content);
       })
@@ -139,22 +140,19 @@ function Role() {
         console.log(err);
       });
   };
-  const seal = [
-    role.map((rol: any, index: number) => {
-      index = rol.id;
-      return { value: `${rol.rolePermission}`, label: `${rol.rolePermission}` };
-    }),
-  ];
 
+console.log(useScope,'useScope')
   const scope = useScope?.map((scope: any) => {
-    let scopeArray = scope.roleScopes.split(",");
-    return scopeArray.map((scopeArray: any) => {
-      return { value: scopeArray, label: scopeArray.toUpperCase() };
-    });
+    if(scope[0].roleScopes.split(',').includes('all')){
+        return roleScopesOption
+    }else{
+      return { value: scope[0].roleScopes, label: scope[0].roleScopes.toUpperCase()};
+    }
+    
+   
   });
-  let scopeByUser = scope[0];
+  let scopeByUser = scope;
 
-  const sealValue = seal[0];
 
   const [currentPage, setCurrentPage] = React.useState(1);
   const rolePerPage = 5;
@@ -326,7 +324,7 @@ function Role() {
                                   closeMenuOnSelect={false}
                                   components={animatedComponents}
                                   isMulti
-                                  options={scopeByUser}
+                                  options={roleScopesOption}
                                 />
                               </div>
                             </div>
