@@ -23,9 +23,8 @@ export default async function signup(
 
       if (error) {
         console.log(error);
-        return failCode(res, error, "email da ton tai");
+        return failCode(res, error, "Something was wrong!!");
       } else {
-        console.log("1111111111111111");
 
         let {
           userFirstName,

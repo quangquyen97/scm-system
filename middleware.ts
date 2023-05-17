@@ -14,7 +14,7 @@ export async function middleware(req: NextRequest) {
     }));
   if (req.nextUrl.pathname.startsWith("/login") && !verifiedToken) {
 
-    return 
+    return NextResponse.next();
   }
 
   if (req.url.includes("/login") && verifiedToken) {
@@ -27,5 +27,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/login",'/create-user','/admin-template','/role','/type','/account-info'],
+  matcher: ["/dashboard", "/login",'/create-user','/admin-template','/role','/type','/account-info','api/userApi/admin/:path*','api/userApi/user/:path*'],
 };

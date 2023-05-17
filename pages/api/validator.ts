@@ -8,22 +8,34 @@ const signupSchema: any = Joi.object({
   userPassword: Joi.string()
     .min(6)
     .max(16)
-    .regex(new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,16}$/))
+    .regex(
+      new RegExp(
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,16}$/
+      )
+    )
     .required(),
   userRole: Joi.required(),
   userFirstName: Joi.string().required(),
   userLastName: Joi.string().required(),
-  userType:Joi.required(),
+  userType: Joi.required(),
   userPhoneNumber: Joi.number(),
-  userDob:Joi.date(),
-  userAdress:Joi.string(),
+  userDob: Joi.date(),
+  userAdress: Joi.string(),
   relatedType: Joi.array(),
-  relatedUser: Joi.array()
+  relatedUser: Joi.array(),
 });
 
 const signinShema: any = Joi.object({
   userEmail: Joi.string().email().required(),
   userPassword: Joi.string().required(),
 });
+
+const createRole: any = Joi.object({
+  roleName: Joi.required(),
+  roleDescription: Joi.required(),
+  roleScopes: Joi.required(),
+});
+
 export const validateSignup = validator(signupSchema);
 export const validateSignin = validator(signinShema);
+export const validateCreateRole = validator(createRole);
