@@ -88,15 +88,15 @@ export default async function signup(
           userType,
         },
       });
-     
-      if (findUserByType.length >0) {
-      
+
+      if (findUserByType.length > 0) {
+
         successCode(res, findUserByType, "tim thanh cong");
       }
-      else{
-        successCode(res,'','No data record')
+      else {
+        successCode(res, '', 'No data record')
       }
-      
+
     } else {
       return failCode(res, "", "sai method");
     }
