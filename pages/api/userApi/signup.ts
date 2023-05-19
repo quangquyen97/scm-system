@@ -23,9 +23,8 @@ export default async function signup(
 
       if (error) {
         console.log(error);
-        return failCode(res, error, "email da ton tai");
+        return failCode(res, error, "Something was wrong!!");
       } else {
-        console.log("1111111111111111");
 
         let {
           userFirstName,
@@ -89,15 +88,15 @@ export default async function signup(
           userType,
         },
       });
-     
-      if (findUserByType.length >0) {
-      
+
+      if (findUserByType.length > 0) {
+
         successCode(res, findUserByType, "tim thanh cong");
       }
-      else{
-        successCode(res,'','No data record')
+      else {
+        successCode(res, '', 'No data record')
       }
-      
+
     } else {
       return failCode(res, "", "sai method");
     }

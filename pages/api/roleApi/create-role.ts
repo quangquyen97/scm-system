@@ -3,6 +3,7 @@ import { failCode, successCode, errorCode } from "../../../utils/response";
 import * as bcrypt from "bcrypt-ts";
 import initModels from "../../../models/init-models";
 import sequelize from "../../../models/config";
+import { validateCreateRole } from "../validator";
 
 const model = initModels(sequelize);
 
@@ -16,26 +17,33 @@ export default async function signup(
 ) {
   try {
     if (req.method == "POST") {
-      let {
-        roleName,
-        roleDescription,
-        rolePermission,
-        roleScopes,
-        userId,
-        typeId,
-        id,
-      } = req.body;
-      let data = {
-        id,
-        roleName,
-        roleDescription,
-        rolePermission,
-        roleScopes,
-        userId,
-        typeId,
-      };
-     let newRole = await model.Roles.create(data)
-     successCode(res,newRole,'Create Role success')
+      let { error } = validateCreateRole(req.body);
+      if (error) {
+        console.log(error)
+        return failCode(res, error, 'Something was wrong!!');
+      }
+      else {
+        let {
+          roleName,
+          roleDescription,
+          rolePermission,
+          roleScopes,
+          userId,
+          typeId,
+          id,
+        } = req.body;
+        let data = {
+          id,
+          roleName,
+          roleDescription,
+          rolePermission,
+          roleScopes,
+          userId,
+          typeId,
+        };
+        let newRole = await model.Roles.create(data)
+        successCode(res, newRole, 'Create Role success')
+      }
     } else {
       failCode(res, req, "Error method");
     }
