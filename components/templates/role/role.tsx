@@ -4,7 +4,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 import swal from "sweetalert";
-import { decode } from "../../../middleware/auth";
+import { decode } from "../../../lib/auth";
 import { Label } from "flowbite-react";
 import Pagination from "../../panigation";
 

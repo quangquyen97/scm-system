@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { decode } from "../../../middleware/auth";
+import { decode } from "../../../lib/auth";
 
 function AccountInfo() {
   const [account, setAccount] = useState({

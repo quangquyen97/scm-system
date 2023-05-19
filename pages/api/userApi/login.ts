@@ -3,7 +3,7 @@ import init_models from "../../../models/init-models";
 import sequelize from "../../../models/config";
 import { errorCode, failCode, successCode } from "../../../utils/response";
 import * as bcrypt from "bcrypt-ts";
-import { decode, encodeToken, refreshToken } from "../../../middleware/auth";
+import { decode, encodeToken, refreshToken } from "../../../lib/auth";
 import { validateSignin } from "../validator";
 
 const model = init_models(sequelize);

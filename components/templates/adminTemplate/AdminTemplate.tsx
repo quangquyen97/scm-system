@@ -4,7 +4,7 @@ import { object, string, date } from "yup";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import swal from "sweetalert";
-import { decode } from "../../../middleware/auth";
+import { decode } from "../../../lib/auth";
 import Pagination from "../../panigation";
 import { RoleScopes } from '../../../models/roles';
 const animatedComponents = makeAnimated();
