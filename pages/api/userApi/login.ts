@@ -1,9 +1,10 @@
+import { encodeToken } from './../../../middleware/auth';
 import { NextApiRequest, NextApiResponse } from "next";
 import init_models from "../../../models/init-models";
 import sequelize from "../../../models/config";
 import {  failCode, successCode } from "../../../utils/response";
 import * as bcrypt from "bcrypt-ts";
-import { encodeToken, refreshToken } from "../../../middleware/auth";
+
 import { validateSignin } from "../validator";
 
 const model = init_models(sequelize);
