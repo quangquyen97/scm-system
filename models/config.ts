@@ -1,5 +1,5 @@
-const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize(process.env.DB_NAME_NEW, process.env.DB_USER_NEW, process.env.DB_PASS_NEW, {
+import { Sequelize } from "sequelize";
+const sequelize = new Sequelize(process.env.DB_NAME_NEW as string, process.env.DB_USER_NEW as string, process.env.DB_PASS_NEW as string, {
 
   host: process.env.DB_HOST_NEW,
   dialect: 'mysql',
