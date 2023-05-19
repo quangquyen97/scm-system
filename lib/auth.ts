@@ -2,7 +2,7 @@
 
 
 import {jwtVerify} from 'jose'
-
+import jwt from 'jsonwebtoken'
 interface UserJwtPayload{
   jti:string,
   iat:number
@@ -32,28 +32,28 @@ export const verifyAuth = async (token: string) => {
   // }
 };
 
-// export const decode = (token: string) => {
-//   return jwt.decode(token);
-// };
+export const decode = (token: string) => {
+  return jwt.decode(token);
+};
 
-// export const kiemTraToken =  async(
-//   req: { headers: { accessToken: string } },
-//   res: {
-//     status: (arg0: number) => {
-//       (): any;
-//       new (): any;
-//       send: { (arg0: string): void; new (): any };
-//     };
-//   },
-//   next: () => void
-// ) => {
-//   let { accessToken } = req.headers;
-//   // console.log(accessToken)
-//   try {
-//     if (await verifyAuth(accessToken)) {
-//       next();
-//     }
-//   } catch (error) {
-//     res.status(401).send("token khong hop le");
-//   }
-// };
+export const kiemTraToken =  async(
+  req: { headers: { accessToken: string } },
+  res: {
+    status: (arg0: number) => {
+      (): any;
+      new (): any;
+      send: { (arg0: string): void; new (): any };
+    };
+  },
+  next: () => void
+) => {
+  let { accessToken } = req.headers;
+  // console.log(accessToken)
+  try {
+    if (await verifyAuth(accessToken)) {
+      next();
+    }
+  } catch (error) {
+    res.status(401).send("token khong hop le");
+  }
+};
