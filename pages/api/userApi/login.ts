@@ -33,6 +33,7 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
               userEmail,
               accessToken: encodeToken(checkUser),
             };
+            console.log( res,' accessToken: encodeToken(checkUser),')
             return successCode(res, userInfor, "Login accepted!");
           } else {
             return failCode(res, "", "Your password is not correct");
