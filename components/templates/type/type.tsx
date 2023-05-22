@@ -23,7 +23,7 @@ function Type() {
   const [search, setSearch] = useState('')
   const delType = async (id: object) => {
     await axios
-      .delete("/api/typeApi/delete-type", id)
+      .put("/api/typeApi/delete-type", id)
       .then((result) => {
         swal({
           title: "Delete Type success!!",
@@ -51,6 +51,7 @@ function Type() {
           text: `${result.data.message}`,
           icon: "success",
         });
+        getType();
         console.log(result, "update role");
       })
       .catch((err) => {
@@ -422,9 +423,8 @@ function Type() {
                                   data-bs-dismiss="modal"
                                   className="del-user-button"
                                   onClick={() => {
-                                    let data = { id: idType };
-                                    console.log(data);
-                                    delType({ data });
+                                   
+                                    delType({ id: idType });
                                   }}
                                 >
                                   Delete
