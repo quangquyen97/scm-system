@@ -54,7 +54,7 @@ function Role() {
   const [useScope, setUserScope] = useState([]);
   const delRole = async (id: object) => {
     await axios
-      .delete("/api/roleApi/delete-role", id)
+      .post("/api/roleApi/delete-role", id)
       .then((result) => {
         swal({
           title: "Delete Role success!!",
@@ -131,9 +131,10 @@ function Role() {
       .then((result) => {
         console.log(result);
         console.log(roleDetail, "data");
-        setRoleDetail(result.data.content);
+        setRoleDetail(result.data.content[0]);
         
         setId(result.data.content[0]);
+        console.log(result,'result.data.content')
         setUserScope(result.data.content);
       })
       .catch((err) => {
@@ -143,10 +144,10 @@ function Role() {
 
 console.log(useScope,'useScope')
   const scope = useScope?.map((scope: any) => {
-    if(scope[0].roleScopes.split(',').includes('all')){
+    if(scope[0]?.roleScopes?.split(',').includes('all')){
         return roleScopesOption
     }else{
-      return { value: scope[0].roleScopes, label: scope[0].roleScopes.toUpperCase()};
+      return { value: scope[0]?.roleScopes, label: scope[0]?.roleScopes?.toUpperCase()};
     }
     
    
@@ -531,9 +532,9 @@ console.log(useScope,'useScope')
                                     data-bs-dismiss="modal"
                                     className="del-user-button"
                                     onClick={() => {
-                                      let data = { id: idUser };
-                                      console.log(data);
-                                      delRole({ data });
+                                      
+                                      console.log(idUser);
+                                      delRole({id:idUser} );
                                     }}
                                   >
                                     Delete

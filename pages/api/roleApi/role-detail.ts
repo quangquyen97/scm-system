@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { failCode, successCode, errorCode } from "../../../utils/response";
-import * as bcrypt from "bcrypt-ts";
 import initModels from "../../../models/init-models";
 import sequelize from "../../../models/config";
 
@@ -23,28 +22,24 @@ export default async function getAllRole(
       //     id,
       //   },
       // });
-      let { id } = req.body;
-      console.log(id, 'id')
-      // let arrId = id.split(',')
-      let data: any = []
-      //  console.log(arrId.length)
-      if (id.length > 1) {
-        for (let i = 0; i < id.length; i++) {
-          data.push(await model.Roles.findAll({
-            where: {
-              id: id[i]
-            }
-          }))
-        }
-      }
-      else {
-        data = await model.Roles.findAll({
-          where: {
-            id
-          }
-        })
-      }
-      successCode(res, data, "Role detail");
+      let {id}= req.body;
+      let arrId = id.split(',')
+      let data: any= []
+     console.log(arrId.length)
+     if(  arrId.length > 1){
+      for(let i = 0; i < arrId.length ; i++){
+        data.push( await model.Roles.findAll({where:{
+          id:arrId[i]
+        }}))
+    }
+    }
+    else{
+      data = await model.Roles.findAll({where:{
+        id
+      }})
+     }
+      console.log(data,'data')
+      successCode(res, data, "Roles detail");
     } else if (req.method === "POST") {
       let { userRole } = req.body;
 

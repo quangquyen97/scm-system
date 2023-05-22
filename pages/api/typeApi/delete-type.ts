@@ -14,7 +14,7 @@ export default async function deleteType(
   res: NextApiResponse
 ) {
   try {
-    if (req.method == "DELETE") {
+
       let { id } = req.body;
       console.log(req,'req')
       let isTypeUnLink = await model.Users.count({
@@ -40,9 +40,7 @@ export default async function deleteType(
         });
         successCode(res, "", "Delete type success");
       }
-    } else {
-      failCode(res, req, "Error method");
-    }
+    
   } catch (error: any) {
     return errorCode(error, "Delete unsuccess");
   }
