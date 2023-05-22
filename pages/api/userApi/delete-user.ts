@@ -10,7 +10,7 @@ export default async function Example(
   res: NextApiResponse
 ) {
   try {
-    if (req.method === "DELETE") {
+   
       let { id } = req.body;
 
       let checkUser = await model.Users.findByPk(id);
@@ -25,8 +25,7 @@ export default async function Example(
         console.log(id);
         return failCode(res, "", "user id khong ton tai");
       }
-    }
-    return failCode(res, "", "sai method");
+   
   } catch (error: any) {
     return errorCode(error, "lỗi 500");
   }

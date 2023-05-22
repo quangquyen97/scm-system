@@ -196,8 +196,14 @@ function AdminTemplate() {
   };
   const delUser = async (id: object) => {
     await axios
-      .delete("/api/userApi/delete-user", id)
+      .post("/api/userApi/delete-user", id)
       .then((result) => {
+        console.log(result.data.message)
+        swal({
+          title: "Delete User success!!",
+          text: `${result.data.message}`,
+          icon: "success",
+        });
         getAllUser();
       })
       .catch((err: any) => {
@@ -1087,8 +1093,8 @@ function AdminTemplate() {
                                     data-bs-dismiss="modal"
                                     className="del-user-button"
                                     onClick={() => {
-                                      let data = { id: user.id };
-                                      delUser({ data });
+                        
+                                      delUser( { id: user.id });
                                     }}
                                   >
                                     Delete
