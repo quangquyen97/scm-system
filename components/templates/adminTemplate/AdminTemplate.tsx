@@ -6,7 +6,7 @@ import makeAnimated from "react-select/animated";
 import swal from "sweetalert";
 import { decode } from "../../../middleware/auth";
 import Pagination from "../../panigation";
-import { RoleScopes } from '../../../models/roles';
+import { RoleScopes } from "../../../models/roles";
 const animatedComponents = makeAnimated();
 const RolePermOption = [
   { value: "perUser_view", label: "USER_VIEW" },
@@ -67,7 +67,7 @@ function AdminTemplate() {
           ...formSignup,
           relatedType: [...formSignup.relatedType, e.target.value],
         });
-        console.log(formSignup, "relatye");
+       
       } else {
         setFormSignUp({
           ...formSignup,
@@ -133,7 +133,7 @@ function AdminTemplate() {
   console.log(search);
   const [roles, setRoles] = React.useState([]);
   const [roleDetail, setRoleDetail] = React.useState([]);
-  const [rol, setRol] = React.useState([""]);
+  const [rol, setRol] :any = React.useState([]);
   let userInfo = {
     userDayOfBirth: "",
     userFirstName: "",
@@ -173,9 +173,7 @@ function AdminTemplate() {
       .then((result) => {
         console.log(result, "getTypeDetail");
         setTypeDetail(result.data.content);
-        console.log(result.data.content,'result.data.content')
-        console.log(result.data.content, "id");
-        console.log(typeDetail, "typeName");
+
       })
       .catch((err) => {
         console.log(err, "ees");
@@ -185,9 +183,12 @@ function AdminTemplate() {
     await axios
       .put("/api/roleApi/role-detail", id)
       .then((result) => {
-        console.log(result.data.content[0], "role");
-        setRol(result.data.content[0].roleScopes);
-
+        console.log(result.data.content[0][0], "role");
+        setRol(result.data.content.map((item :any) =>{
+          return item[0].roleScopes
+        }));
+          
+         console.log(rol,'roleeeeee')
       })
       .catch((err) => {
         console.log(err, "ees");
@@ -283,7 +284,7 @@ function AdminTemplate() {
     await axios
       .get("/api/typeApi/get-all-type")
       .then((result) => {
-        console.log(result,'')
+       console.log(result, "");
         setType(
           result.data.content.filter((lv: any) => {
             return lv.typeLevel >= typeFilter[0].typeLevel;
@@ -319,8 +320,10 @@ function AdminTemplate() {
     await axios
       .post(`/api/userApi/get-all-user`, id)
       .then((result) => {
-        setUserRoleDetail(result.data.content.roleData[0].roleScopes);
-        console.log(result.data.content.roleData[0].roleScopes.split(","));
+        console.log(result.data.content);
+        setUserRoleDetail(result.data.content.data.map((roleId:any) => { 
+          return roleId.roleScopes
+         }));
       })
       .catch((err) => {
         console.log(err);
@@ -347,7 +350,7 @@ function AdminTemplate() {
       return { value: `${type.id}`, label: `${type.typeName}` };
     }),
   ];
-  console.log(type, 'typeeeeee')
+  console.log(type, "typeeeeee");
 
   const [id, setId] = React.useState({});
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -723,13 +726,13 @@ function AdminTemplate() {
                                     .then((result) => {
                                       setRelaType({
                                         ...relaType,
-                                        relaType: result.data.content.map(
-                                          (item: any) => {
-                                            return item;
-                                          }
-                                        ),
+                                        relaType: result.data.content
                                       });
-                                      console.log(relaType, "type");
+                                      console.log(result.data.content.map(
+                                        (item: any) => {
+                                          return item;
+                                        }
+                                      ), "type");
                                     })
                                     .catch((err) => {
                                       console.log(err);
@@ -741,7 +744,7 @@ function AdminTemplate() {
                           </div>
                         </form>
                         <div className="px-3">
-                          {rol.includes("type") || rol.includes("all") ? (
+                          {rol.map((item:any) => item.split(',')).flatMap((item:any) => item).includes("type") || rol.map((item:any) => item.split(',')).flatMap((item:any) => item).includes("all") ? (
                             <div>
                               <label
                                 htmlFor="relatedType"
@@ -783,44 +786,37 @@ function AdminTemplate() {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {relaType.relaType
-                                      ? relaType.relaType.map((item: any) => {
-                                          let a = 1;
-                                          return item.map(
-                                            (user: any, index: number) => {
-                                              return (
-                                                <tr key={user.id}>
-                                                  <td>
-                                                    <input
-                                                      name="relaType"
-                                                      type="checkbox"
-                                                      value={user.id}
-                                                      onChange={
-                                                        handleChangeChecked
-                                                      }
-                                                    />
-                                                  </td>
-                                                  <td style={{ fontSize: 12 }}>
-                                                    {a++}
-                                                  </td>
-                                                  <td style={{ fontSize: 12 }}>
-                                                    {user.userFirstName}
-                                                  </td>
-                                                  <td style={{ fontSize: 12 }}>
-                                                    {user.userLastName}
-                                                  </td>
-                                                  <td style={{ fontSize: 12 }}>
-                                                    {user.userEmail}
-                                                  </td>
-                                                  <td style={{ fontSize: 12 }}>
-                                                    {user.userPhoneNumber}
-                                                  </td>
-                                                </tr>
-                                              );
-                                            }
+                                    {relaType.relaType.map((item: any,index:number) => {
+                                          return (
+                                            <tr key={item.id}>
+                                              <td>
+                                                <input
+                                                  name="relaType"
+                                                  type="checkbox"
+                                                  value={item.id}
+                                                  onChange={
+                                                    handleChangeChecked
+                                                  }
+                                                />
+                                              </td>
+                                              <td style={{ fontSize: 12 }}>
+                                                {index++}
+                                              </td>
+                                              <td style={{ fontSize: 12 }}>
+                                                {item.userFirstName}
+                                              </td>
+                                              <td style={{ fontSize: 12 }}>
+                                                {item.userLastName}
+                                              </td>
+                                              <td style={{ fontSize: 12 }}>
+                                                {item.userEmail}
+                                              </td>
+                                              <td style={{ fontSize: 12 }}>
+                                                {item.userPhoneNumber}
+                                              </td>
+                                            </tr>
                                           );
-                                        })
-                                      : null}
+                                        })}
                                   </tbody>
                                 </table>
                               </div>
@@ -829,7 +825,7 @@ function AdminTemplate() {
                             ""
                           )}
 
-                          {rol.includes("point") || rol.includes("all") ? (
+                          {rol.map((item:any) => item.split(',')).flatMap((item:any) => item).includes("point") || rol.map((item:any) => item.split(',')).flatMap((item:any) => item).includes("all")? (
                             <div>
                               <label
                                 htmlFor="relatedUser"
@@ -971,7 +967,7 @@ function AdminTemplate() {
               </div>
             </div>
           </div>
-          <table className="table-auto " style={{minHeight:"273px"}}>
+          <table className="table-auto " style={{ minHeight: "273px" }}>
             <thead>
               <tr>
                 <th>STT</th>
@@ -1017,7 +1013,7 @@ function AdminTemplate() {
                 <th>More</th>
               </tr>
             </thead>
-            <tbody >
+            <tbody>
               {usersPagi
                 ?.filter((item: any) => {
                   return search.toLowerCase() === ""
@@ -1028,7 +1024,7 @@ function AdminTemplate() {
                   return (
                     <tr key={user.id}>
                       <td className="text-start">{index}</td>
-                      <td >{user.userFirstName}</td>
+                      <td>{user.userFirstName}</td>
                       <td style={{ textAlign: "start" }}>{user.userEmail}</td>
                       <td>{user.userDob.replace("T00:00:00.000Z", "")}</td>
                       <td>{user.userPhoneNumber}</td>
@@ -1142,15 +1138,15 @@ function AdminTemplate() {
                 })}
             </tbody>
           </table>
-        
-            <Pagination
-              currentPage={currentPage}
-              changePage={changePage}
-              prePage={prePage}
-              numbers={numbers}
-              nextPage={nextPage}
-            />
-    
+
+          <Pagination
+            currentPage={currentPage}
+            changePage={changePage}
+            prePage={prePage}
+            numbers={numbers}
+            nextPage={nextPage}
+          />
+
           <div>
             <div
               className="modal fade edit-user"
@@ -1336,11 +1332,17 @@ function AdminTemplate() {
                           <input
                             id="user-email"
                             name="userRole"
-                            defaultValue={typeDetail.length > 1 ? typeDetail.map((item: any) => {
-                              return item.map((value: any) => value.typeName);
-                            }) : typeDetail.map((item: any) => {
-                              return item.typeName;
-                            })}
+                            defaultValue={
+                              typeDetail.length > 1
+                                ? typeDetail.map((item: any) => {
+                                    return item.map(
+                                      (value: any) => value.typeName
+                                    );
+                                  })
+                                : typeDetail.map((item: any) => {
+                                    return item.typeName;
+                                  })
+                            }
                             readOnly
                             type="text"
                             className=" block w-full border placeholder-gray-300 border-gray-300 px-7 py-2 text-gray-900  focus:z-10 focus:outline-none sm:text-sm rounded-md shadow-sm"

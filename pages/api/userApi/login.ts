@@ -2,7 +2,7 @@ import { encodeToken } from './../../../middleware/auth';
 import { NextApiRequest, NextApiResponse } from "next";
 import init_models from "../../../models/init-models";
 import sequelize from "../../../models/config";
-import {  failCode, successCode } from "../../../utils/response";
+import {  errorCode, failCode, successCode } from "../../../utils/response";
 import * as bcrypt from "bcrypt-ts";
 
 import { validateSignin } from "../validator";
@@ -33,7 +33,7 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
               userEmail,
               accessToken: encodeToken(checkUser),
             };
-            console.log( res,' accessToken: encodeToken(checkUser),')
+            console.log( checkUser,' accessToken: encodeToken(checkUser),')
             return successCode(res, userInfor, "Login accepted!");
           } else {
             return failCode(res, "", "Your password is not correct");
@@ -46,6 +46,6 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
       return failCode(res, "", "Wrong method");
     }
   } catch (error: any) {
-    return failCode(res,error, "lỗi 500");
+    return errorCode(error, "lỗi 500");
   }
 }

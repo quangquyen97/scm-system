@@ -82,7 +82,6 @@ export default function Sidebar() {
               <Link
                 href="#"
                 className="block px-4 py-2 text-sm text-gray-700 align-self-end"
-               
                 role="menuitem"
                 onClick={() => {
                   document.cookie = "USER_LOGIN=";
@@ -199,7 +198,7 @@ export default function Sidebar() {
             </li>
             <li>
               <Link
-                href="permission"
+               href='get-info/account-info'
                 className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <span className="flex-1 ml-3 whitespace-nowrap">

@@ -1,3 +1,6 @@
+
+import { DataTypes } from 'sequelize';
+import { UUIDV4 } from 'sequelize';
 import { NextApiRequest, NextApiResponse } from "next";
 import { failCode, successCode, errorCode } from "../../../utils/response";
 import * as bcrypt from "bcrypt-ts";
@@ -21,14 +24,16 @@ export default async function signup(
         typeName,
         typeDescription,
         typeLevel,
-        id,
+        id: id,
       };
-      let checkNameOfType = await model.Type.count({
+     console.log( id)
+      let checkNameOfType = await model.Type.findOne({
         where: {
           typeName,
         },
       });
-      if (checkNameOfType>0) {
+      console.log(checkNameOfType)
+      if (checkNameOfType) {
        failCode(res,data.typeName,'Type name is exist')
       } else {
         let newType = await model.Type.create(data);

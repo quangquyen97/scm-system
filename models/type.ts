@@ -2,14 +2,14 @@
 import { Model, UUIDV4 } from "sequelize";
 
 interface TypeAttributes {
-  id: number;
+  id: string;
   typeName: string;
   typeDescription: string;
   typeLevel: number;
 }
 export default (sequelize: any, DataTypes: any) => {
   class Type extends Model<TypeAttributes> implements TypeAttributes {
-    id!: number;
+    id!: string;
     typeName!: string;
     typeDescription!: string;
     typeLevel!: number;
@@ -22,7 +22,7 @@ export default (sequelize: any, DataTypes: any) => {
   Type.init(
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUIDV4,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,

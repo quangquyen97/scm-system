@@ -23,48 +23,53 @@ export default async function getAllRole(
       //     id,
       //   },
       // });
-      let {id}= req.body;
-      let arrId = id.split(',')
-      let data: any= []
-     console.log(arrId.length)
-     if(  arrId.length > 1){
-      for(let i = 0; i < arrId.length ; i++){
-        data.push( await model.Roles.findAll({where:{
-          id:arrId[i]
-        }}))
-    }
-    }
-    else{
-      data = await model.Roles.findAll({where:{
-        id
-      }})
-     }
+      let { id } = req.body;
+      console.log(id, 'id')
+      // let arrId = id.split(',')
+      let data: any = []
+      //  console.log(arrId.length)
+      if (id.length > 1) {
+        for (let i = 0; i < id.length; i++) {
+          data.push(await model.Roles.findAll({
+            where: {
+              id: id[i]
+            }
+          }))
+        }
+      }
+      else {
+        data = await model.Roles.findAll({
+          where: {
+            id
+          }
+        })
+      }
       successCode(res, data, "Role detail");
     } else if (req.method === "POST") {
       let { userRole } = req.body;
-   
-   let data:any= []
+
+      let data: any = []
       for (let i = 0; i <= userRole.length; i++) {
-        console.log(userRole[i],'userRole[i]')
-         await model.Users.findAll({
+        console.log(userRole[i], 'userRole[i]')
+        await model.Users.findAll({
           where: {
             userRole: userRole[i],
           },
         })
           .then((result) => {
-          console.log(data,'on for')
+            console.log(data, 'on for')
 
-          return  data.push(result.map(e => e.dataValues))
+            return data.push(result.map(e => e.dataValues))
           })
           .catch((err: any) => {
             console.log(err);
           });
-          
-        }
-        console.log(data,'on for')
-       
+
+      }
+      console.log(data, 'on for')
+
       successCode(res, data, "tim thanh cong");
-   
+
     } else {
       failCode(res, req, "Error method");
     }
