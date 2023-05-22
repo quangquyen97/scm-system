@@ -23,7 +23,7 @@ function Type() {
   const [search, setSearch] = useState('')
   const delType = async (id: object) => {
     await axios
-      .put("/api/typeApi/delete-type", id)
+      .post("/api/typeApi/delete-type", id)
       .then((result) => {
         swal({
           title: "Delete Type success!!",
