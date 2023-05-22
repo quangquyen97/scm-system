@@ -1,5 +1,6 @@
 "use strict";
-import { Model, UUIDV4 } from "sequelize";
+import { Model,UUIDV4 } from "sequelize";
+
 
 interface TypeAttributes {
   id: string;
@@ -22,7 +23,8 @@ export default (sequelize: any, DataTypes: any) => {
   Type.init(
     {
       id: {
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,

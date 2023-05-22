@@ -163,7 +163,7 @@ export default function LoginForm() {
                     >
                       <>
                         {errors.userEmail?.message}
-                        {err.message.includes("email") ? err.message : null}
+                        {err.message?.includes("email") ? err.message : null}
                       </>
                     </small>
                   </div>
@@ -197,7 +197,7 @@ export default function LoginForm() {
                     >
                       <>
                         {errors.userPassword?.message}
-                        {err.message.includes("password") ? err.message : null}
+                        {err.message?.includes("password") ? err.message : null}
                       </>
                     </small>
 

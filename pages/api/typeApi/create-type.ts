@@ -1,9 +1,7 @@
 
-import { DataTypes } from 'sequelize';
-import { UUIDV4 } from 'sequelize';
 import { NextApiRequest, NextApiResponse } from "next";
 import { failCode, successCode, errorCode } from "../../../utils/response";
-import * as bcrypt from "bcrypt-ts";
+import { uuid } from 'uuidv4';
 import initModels from "../../../models/init-models";
 import sequelize from "../../../models/config";
 
@@ -19,14 +17,15 @@ export default async function signup(
 ) {
   try {
     if (req.method == "POST") {
+      const uniqueId = uuid()
       let { typeName, typeDescription, typeLevel, id } = req.body;
       let data = {
         typeName,
         typeDescription,
         typeLevel,
-        id: id,
+        id: uniqueId,
       };
-     console.log( id)
+     console.log( uniqueId)
       let checkNameOfType = await model.Type.findOne({
         where: {
           typeName,
