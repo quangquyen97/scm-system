@@ -37,6 +37,7 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
       let roleId = dataUsers?.userRole;
       let arrRole = String(roleId)?.split(',');
 
+      let data = []
       if (arrRole.length > 1) {
         for (let i = 0; i < arrRole.length; i++) {
           data.push(await model.Roles.findAll({
