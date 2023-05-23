@@ -54,7 +54,6 @@ export default function LoginForm() {
         });
       }
     } catch (err: any) {
-      console.log(err, "err");
       setErr({ message: err.response.data.message });
     }
   };
@@ -148,7 +147,7 @@ export default function LoginForm() {
                       //     ...formLogin,
                       //     userEmail: e.target.value,
                       //   });
-                      //   console.log(formLogin);
+                      //
                       // }}
                       // required
                       className="relative block placeholder-gray-300 border border-gray-300 px-7 py-2 text-gray-900 focus:z-10  focus:outline-none sm:text-sm shadow-sm"

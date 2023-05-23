@@ -64,7 +64,6 @@ function Role() {
         getRole();
       })
       .catch((err: any) => {
-        console.log(err.response.data.content);
         swal({
           title: "Opps!",
           text: `${err.response.data.message}`,
@@ -82,11 +81,8 @@ function Role() {
           text: `${result.data.message}`,
           icon: "success",
         });
-        console.log(result, "update role");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const formCreateRoleFecth = async (data: object) => {
@@ -101,12 +97,8 @@ function Role() {
           });
           getRole();
         })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (err) {
-      console.log(err);
-    }
+        .catch((err) => {});
+    } catch (err) {}
   };
   const [role, setRole] = useState([]);
 
@@ -121,39 +113,31 @@ function Role() {
   const handleOnchange = (e: any) => {
     let { name } = e.target;
     setId({ ...idUser, [name]: e.target.value });
-    console.log(idUser, "update");
   };
   const getUserByRole = async (data: any) => {
-    console.log(data, "data");
-
     await axios
       .put("/api/roleApi/role-detail", data)
       .then((result) => {
-        console.log(result);
-        console.log(roleDetail, "data");
         setRoleDetail(result.data.content[0]);
-        
+
         setId(result.data.content[0]);
-        console.log(result,'result.data.content')
+
         setUserScope(result.data.content);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
-console.log(useScope,'useScope')
   const scope = useScope?.map((scope: any) => {
-    if(scope[0]?.roleScopes?.split(',').includes('all')){
-        return roleScopesOption
-    }else{
-      return { value: scope[0]?.roleScopes, label: scope[0]?.roleScopes?.toUpperCase()};
+    if (scope[0]?.roleScopes?.split(",").includes("all")) {
+      return roleScopesOption;
+    } else {
+      return {
+        value: scope[0]?.roleScopes,
+        label: scope[0]?.roleScopes?.toUpperCase(),
+      };
     }
-    
-   
   });
   let scopeByUser = scope;
-
 
   const [currentPage, setCurrentPage] = React.useState(1);
   const rolePerPage = 5;
@@ -219,7 +203,6 @@ console.log(useScope,'useScope')
                           JSON.parse(`${localStorage.getItem("userToken")}`)
                         );
                         getUserByRole({ id: userScopeLogin?.data.userRole });
-                        console.log(scopeByUser, "ne");
                       }
                     }}
                   >
@@ -266,7 +249,6 @@ console.log(useScope,'useScope')
                                     ...roleCreate,
                                     roleName: e.target.value,
                                   });
-                                  console.log(roleCreate, "roleCreate");
                                 }}
                                 className="block w-full placeholder-gray-300 border border-gray-300 px-7 py-2 text-gray-900 focus:z-10  focus:outline-none sm:text-sm rounded-md shadow-sm"
                                 placeholder="Name of role"
@@ -290,7 +272,6 @@ console.log(useScope,'useScope')
                                     ...roleCreate,
                                     roleDescription: e.target.value,
                                   });
-                                  console.log(roleCreate, "roleCreate");
                                 }}
                                 className="block w-full placeholder-gray-300 border border-gray-300 px-7 py-2 text-gray-900 focus:z-10  focus:outline-none sm:text-sm rounded-md shadow-sm"
                                 placeholder="Detailed description"
@@ -318,7 +299,6 @@ console.log(useScope,'useScope')
                                       ...roleCreate,
                                       roleScopes: arrayRole.toString(),
                                     });
-                                    console.log(roleCreate.roleScopes);
                                   }}
                                   className="block w-full placeholder-gray-300 border-gray-300  text-gray-900  focus:z-10 focus:outline-none sm:text-sm   border border-gray-300 rounded-md shadow-sm"
                                   placeholder="Select Scopes"
@@ -480,7 +460,6 @@ console.log(useScope,'useScope')
                             type="button"
                             onClick={() => {
                               setId(role.id);
-                              console.log(role.id);
                             }}
                           >
                             <img src="trash-icon.svg" alt="delete user" />
@@ -532,9 +511,7 @@ console.log(useScope,'useScope')
                                     data-bs-dismiss="modal"
                                     className="del-user-button"
                                     onClick={() => {
-                                      
-                                      console.log(idUser);
-                                      delRole({id:idUser} );
+                                      delRole({ id: idUser });
                                     }}
                                   >
                                     Delete
@@ -553,7 +530,6 @@ console.log(useScope,'useScope')
                             type="button"
                             onClick={() => {
                               getUserByRole({ id: role.id });
-                              console.log({ id: role.id });
                             }}
                           >
                             <img src="edit-icon.svg" alt="edit user" />
@@ -581,13 +557,13 @@ console.log(useScope,'useScope')
                 })}
             </tbody>
           </table>
-            <Pagination
-              currentPage={currentPage}
-              changePage={changePage}
-              prePage={prePage}
-              numbers={numbers}
-              nextPage={nextPage}
-            />
+          <Pagination
+            currentPage={currentPage}
+            changePage={changePage}
+            prePage={prePage}
+            numbers={numbers}
+            nextPage={nextPage}
+          />
           <div>
             <div
               className="modal fade edit-user w-full"
@@ -746,7 +722,6 @@ console.log(useScope,'useScope')
                               ...idUser,
                               roleDescription: e.target.value,
                             });
-                            console.log(idUser);
                           }}
                           className="block w-full placeholder-gray-300 border border-gray-300 px-7 py-2 text-gray-900 focus:z-10  focus:outline-none sm:text-sm rounded-md shadow-sm"
                           style={{ borderRadius: 4 }}
@@ -781,8 +756,6 @@ console.log(useScope,'useScope')
                               ...idUser,
                               roleScopes: data.toString(),
                             });
-                            console.log(idUser.roleScopes, "permission");
-                            console.log(idUser.roleScopes, "eee");
                           }}
                         />
                       </div>
@@ -813,8 +786,6 @@ console.log(useScope,'useScope')
                               ...idUser,
                               rolePermission: data.toString(),
                             });
-                            console.log(idUser.rolePermission, "permission");
-                            console.log(idUser, "eee");
                           }}
                         />
                       </div>

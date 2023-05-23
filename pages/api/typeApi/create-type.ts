@@ -25,15 +25,15 @@ export default async function signup(
         typeLevel,
         id: uniqueId,
       };
-     console.log( uniqueId)
+
       let checkNameOfType = await model.Type.findOne({
         where: {
           typeName,
         },
       });
-      console.log(checkNameOfType)
+
       if (checkNameOfType) {
-       failCode(res,data.typeName,'Type name is exist')
+        failCode(res, data.typeName, 'Type name is exist')
       } else {
         let newType = await model.Type.create(data);
         successCode(res, newType, "Create Type success");

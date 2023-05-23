@@ -183,9 +183,9 @@ function AdminTemplate() {
     await axios
       .put("/api/roleApi/role-detail", id)
       .then((result) => {
-        console.log(result.data.content[0][0], "role");
+        console.log(result.data.content, "role");
         setRol(result.data.content.map((item :any) =>{
-          return item[0].roleScopes
+          return item.roleScopes
         }));
           
          console.log(rol,'roleeeeee')
@@ -653,6 +653,7 @@ function AdminTemplate() {
 
                               <Select
                                 isMulti={true}
+                                instanceId='userRole'
                                 options={roleOptionEdit[0]}
                                 className="w-100 rounded-md shadow-sm mb-1  "
                                 components={animatedComponents}
@@ -712,6 +713,7 @@ function AdminTemplate() {
                                 className="w-100 rounded-md shadow-sm mb-1 "
                                 options={typeOptionEdit[0]}
                                 components={animatedComponents}
+                                instanceId="userType"
                                 isMulti={true}
                                 onChange={async (e: any) => {
                                   setFormSignUp({
@@ -734,11 +736,7 @@ function AdminTemplate() {
                                         ...relaType,
                                         relaType: result.data.content
                                       });
-                                      console.log(result.data.content.map(
-                                        (item: any) => {
-                                          return item;
-                                        }
-                                      ), "type");
+                                    
                                     })
                                     .catch((err) => {
                                       console.log(err);
@@ -750,7 +748,7 @@ function AdminTemplate() {
                           </div>
                         </form>
                         <div className="px-3">
-                          {rol.map((item:any) => item.split(',')).flatMap((item:any) => item).includes("type") || rol.map((item:any) => item.split(',')).flatMap((item:any) => item).includes("all") ? (
+                          {rol.map((item:any) => item).flatMap((item:any) => item).includes("type") || rol.map((item:any) => item).flatMap((item:any) => item).includes("all") ? (
                             <div>
                               <label
                                 htmlFor="relatedType"
@@ -831,7 +829,7 @@ function AdminTemplate() {
                             ""
                           )}
 
-                          {rol.map((item:any) => item.split(',')).flatMap((item:any) => item).includes("point") || rol.map((item:any) => item.split(',')).flatMap((item:any) => item).includes("all")? (
+                          {rol.map((item:any) => item).flatMap((item:any) => item).includes("point") || rol.map((item:any) => item).flatMap((item:any) => item).includes("all")? (
                             <div>
                               <label
                                 htmlFor="relatedUser"
@@ -1489,6 +1487,7 @@ function AdminTemplate() {
                             options={roleOptionEdit[0]}
                             isMulti
                             className="select-option"
+                            instanceId='userRole'
                             components={animatedComponents}
                             onChange={(e) => {
                               let data = e.map((e: any) => e.value);
@@ -1538,6 +1537,7 @@ function AdminTemplate() {
                           <Select
                             options={typeOptionEdit[0]}
                             isMulti
+                            instanceId='userType'
                             components={animatedComponents}
                             onChange={(e) => {
                               let data = e.map((e: any) => e.value);

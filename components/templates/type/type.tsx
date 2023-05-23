@@ -20,10 +20,10 @@ function Type() {
     id: 0,
   });
 
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState("");
   const delType = async (id: object) => {
     await axios
-      .post("/api/typeApi/delete-type", id)
+      .put("/api/typeApi/delete-type", id)
       .then((result) => {
         swal({
           title: "Delete Type success!!",
@@ -33,7 +33,6 @@ function Type() {
         getType();
       })
       .catch((err: any) => {
-        console.log(err.response.data.content);
         swal({
           title: "Opps!",
           text: `${err.response.data.message}`,
@@ -52,11 +51,8 @@ function Type() {
           icon: "success",
         });
         getType();
-        console.log(result, "update role");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const formCreateTypeFecth = async (data: object) => {
@@ -78,9 +74,7 @@ function Type() {
             icon: "error",
           });
         });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   const [type, setType] = React.useState([]);
 
@@ -95,12 +89,10 @@ function Type() {
   const handleOnchange = (e: any) => {
     let { name } = e.target;
     setId({ ...idType, [name]: e.target.value });
-    console.log(idType, "idType");
   };
   const handleOnchangeCreateType = (e: any) => {
     let { name } = e.target;
     setTypeDetail({ ...typeDetail, [name]: e.target.value });
-    console.log(typeDetail, "update");
   };
   const getTypeDetail = async (data: any) => {
     await axios
@@ -108,12 +100,8 @@ function Type() {
       .then((result) => {
         setTypeDetail(result.data.content[0]);
         setId(result.data.content);
-        console.log(idType)
-        console.log(result.data.content, "content", typeDetail);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   const [sort, setSort] = useState("ASC");
   const sorting = (col: any) => {
@@ -143,7 +131,6 @@ function Type() {
 
   React.useEffect(() => {
     getType();
-
   }, []);
 
   return (
@@ -157,16 +144,21 @@ function Type() {
                 <label htmlFor="search-bar" className="sr-only">
                   Search
                 </label>
-                <input type="text" id="search-bar" placeholder="Search..." onChange={(e) => { 
-                  setSearch(e.target.value)
-                 }} />
+                <input
+                  type="text"
+                  id="search-bar"
+                  placeholder="Search..."
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                />
                 <img src="search-icon.svg" alt="search icon" />
               </div>
             </div>
             <div className="middle-menu">
               <div>
                 <div className="btn-create relative">
-                <span>All ({type.length})</span>
+                  <span>All ({type.length})</span>
                   <button
                     data-bs-toggle="modal"
                     data-bs-target="#createRoleModal"
@@ -307,14 +299,14 @@ function Type() {
                   </span>
                 </div>
               </div>
-          
             </div>
           </div>
           <table className="table-auto ">
             <thead>
               <tr>
                 <th>STT</th>
-                <th onClick={() => sorting("typeName")}>{sort !== "ASC" ? (
+                <th onClick={() => sorting("typeName")}>
+                  {sort !== "ASC" ? (
                     <div className="d-flex align-items-center gap-2">
                       <p className="m-0">Name of type</p>
                       <svg
@@ -342,7 +334,8 @@ function Type() {
                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                       </svg>{" "}
                     </div>
-                  )}</th>
+                  )}
+                </th>
                 <th>Description</th>
                 <th>Type Level</th>
 
@@ -350,134 +343,135 @@ function Type() {
               </tr>
             </thead>
             <tbody>
-              {typePagi?.filter((item:any) => { 
-                    return search.toLowerCase() === '' ? item: item.typeName.toLowerCase().includes(search)
-               }).map((type: any, index) => {
-                return (
-                  <tr key={type.id}>
-                    <td className="text-start">{index++}</td>
-                    <td>{type.typeName}</td>
-                    <td style={{ textAlign: "start" }}>
-                      {type.typeDescription}
-                    </td>
-                    <td style={{ whiteSpace: "nowrap" }}>{type.typeLevel}</td>
+              {typePagi
+                ?.filter((item: any) => {
+                  return search.toLowerCase() === ""
+                    ? item
+                    : item.typeName.toLowerCase().includes(search);
+                })
+                .map((type: any, index) => {
+                  return (
+                    <tr key={type.id}>
+                      <td className="text-start">{index++}</td>
+                      <td>{type.typeName}</td>
+                      <td style={{ textAlign: "start" }}>
+                        {type.typeDescription}
+                      </td>
+                      <td style={{ whiteSpace: "nowrap" }}>{type.typeLevel}</td>
 
-                    <td className="d-flex">
-                      <div>
-                        <button
-                          className="del-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#exampleModal"
-                          type="button"
-                          onClick={() => {
-                            setId(type.id);
-                            console.log(type.id);
-                          }}
-                        >
-                          <img src="trash-icon.svg" alt="delete user" />
-                        </button>
+                      <td className="d-flex">
+                        <div>
+                          <button
+                            className="del-btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"
+                            type="button"
+                            onClick={() => {
+                              setId(type.id);
+                            }}
+                          >
+                            <img src="trash-icon.svg" alt="delete user" />
+                          </button>
 
-                        <div
-                          className="modal fade"
-                          id="exampleModal"
-                          tabIndex={-1}
-                          aria-labelledby="exampleModalLabel"
-                          aria-hidden="true"
-                        >
-                          <div className="modal-dialog">
-                            <div
-                              className="modal-content"
-                              style={{ width: "800px" }}
-                            >
-                              <div className="modal-header">
-                                <h1
-                                  className="modal-title fs-5"
-                                  id="exampleModalLabel"
-                                >
-                                  <img
-                                    src="warning-icon.svg"
-                                    alt="warning icon"
-                                  />{" "}
-                                  Delete this Role?
-                                </h1>
-                                <button
-                                  type="button"
-                                  className="btn-close"
-                                  data-bs-dismiss="modal"
-                                  aria-label="Close"
-                                />
-                              </div>
-                              <div className="modal-body text-xl">
-                                Warning! This cannot be undone.
-                              </div>
-                              <div className="modal-footer">
-                                <button
-                                  type="button"
-                                  className="cancel-button"
-                                  data-bs-dismiss="modal"
-                                >
-                                  Cancel
-                                </button>
-                                <button
-                                  type="button"
-                                  data-bs-dismiss="modal"
-                                  className="del-user-button"
-                                  onClick={() => {
-                                   
-                                    delType({ id: idType });
-                                  }}
-                                >
-                                  Delete
-                                </button>
+                          <div
+                            className="modal fade"
+                            id="exampleModal"
+                            tabIndex={-1}
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true"
+                          >
+                            <div className="modal-dialog">
+                              <div
+                                className="modal-content"
+                                style={{ width: "800px" }}
+                              >
+                                <div className="modal-header">
+                                  <h1
+                                    className="modal-title fs-5"
+                                    id="exampleModalLabel"
+                                  >
+                                    <img
+                                      src="warning-icon.svg"
+                                      alt="warning icon"
+                                    />{" "}
+                                    Delete this Role?
+                                  </h1>
+                                  <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                  />
+                                </div>
+                                <div className="modal-body text-xl">
+                                  Warning! This cannot be undone.
+                                </div>
+                                <div className="modal-footer">
+                                  <button
+                                    type="button"
+                                    className="cancel-button"
+                                    data-bs-dismiss="modal"
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    type="button"
+                                    data-bs-dismiss="modal"
+                                    className="del-user-button"
+                                    onClick={() => {
+                                      delType({ id: idType });
+                                    }}
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div>
-                        <button
-                          className="edit-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editUser"
-                          type="button"
-                          onClick={() => {
-                            getTypeDetail({ id: type.id });
-                            console.log({ id: type.id });
-                          }}
-                        >
-                          <img src="edit-icon.svg" alt="edit user" />
-                        </button>
-                      </div>
-                      <div>
-                        <button
-                          className="view-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#roleDetail"
-                          type="button"
-                          onClick={() => {
-                            // setUserDetail(user);
-                            // getUserDetail({ id: user.id });
+                        <div>
+                          <button
+                            className="edit-btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editUser"
+                            type="button"
+                            onClick={() => {
+                              getTypeDetail({ id: type.id });
+                            }}
+                          >
+                            <img src="edit-icon.svg" alt="edit user" />
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            className="view-btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#roleDetail"
+                            type="button"
+                            onClick={() => {
+                              // setUserDetail(user);
+                              // getUserDetail({ id: user.id });
 
-                            getTypeDetail({ id: type.id });
-                          }}
-                        >
-                          <img src="view-icon.svg" alt="view user" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                              getTypeDetail({ id: type.id });
+                            }}
+                          >
+                            <img src="view-icon.svg" alt="view user" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
           <Pagination
-              currentPage={currentPage}
-              changePage={changePage}
-              prePage={prePage}
-              numbers={numbers}
-              nextPage={nextPage}
-            />
+            currentPage={currentPage}
+            changePage={changePage}
+            prePage={prePage}
+            numbers={numbers}
+            nextPage={nextPage}
+          />
           <div>
             <div
               className="modal fade edit-user w-full"

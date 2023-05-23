@@ -18,7 +18,7 @@ export default async function signup(
     if (req.method == "POST") {
       let { error } = validateCreateRole(req.body);
       if (error) {
-        console.log(error)
+
         return failCode(res, error, 'Something was wrong!!');
       }
       else {

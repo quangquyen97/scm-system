@@ -15,32 +15,32 @@ export default async function getAllRole(
   res: NextApiResponse
 ) {
   try {
-  
-      let { id } = req.body;
-      console.log(req,'req')
-      let isRoleUnLink = await model.Users.count({
+
+    let { id } = req.body;
+
+    let isRoleUnLink = await model.Users.count({
+      where: {
+        userRole: id,
+      },
+    });
+    if (isRoleUnLink) {
+      let userInRole = await model.Users.findAll({
+        where: { userRole: id },
+      });
+
+      failCode(
+        res,
+        userInRole,
+        "Can not delete this role because someone is on the role, remove user from this role and try again"
+      );
+    } else {
+      let result = await model.Roles.destroy({
         where: {
-          userRole: id,
+          id,
         },
       });
-      if (isRoleUnLink) {
-        let userInRole = await model.Users.findAll( {
-          where: { userRole: id },
-        });
-        
-        failCode(
-          res,
-          userInRole,
-          "Can not delete this role because someone is on the role, remove user from this role and try again"
-        );
-      } else {
-        let result = await model.Roles.destroy({
-          where: {
-            id,
-          },
-        });
-        successCode(res, "", "Delete role success");
-      }
+      successCode(res, "", "Delete role success");
+    }
 
   } catch (error: any) {
     return errorCode(error, "Delete unsuccess");
