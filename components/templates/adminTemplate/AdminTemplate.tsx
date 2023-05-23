@@ -67,7 +67,6 @@ function AdminTemplate() {
           ...formSignup,
           relatedType: [...formSignup.relatedType, e.target.value],
         });
-       
       } else {
         setFormSignUp({
           ...formSignup,
@@ -133,7 +132,7 @@ function AdminTemplate() {
   console.log(search);
   const [roles, setRoles] = React.useState([]);
   const [roleDetail, setRoleDetail] = React.useState([]);
-  const [rol, setRol] :any = React.useState([]);
+  const [rol, setRol] = React.useState([]);
   let userInfo = {
     userDayOfBirth: "",
     userFirstName: "",
@@ -165,7 +164,7 @@ function AdminTemplate() {
     setUserDetail(result.data.content.dataUsers);
     setRoles(result.data.content.roleData);
     setRoleDetail(result.data.content.data);
-    console.log(roleDetail, "roleDetail");
+    console.log(rol, "roleDetail");
   };
   const getTypeDetail = async (id: any) => {
     await axios
@@ -173,7 +172,6 @@ function AdminTemplate() {
       .then((result) => {
         console.log(result, "getTypeDetail");
         setTypeDetail(result.data.content);
-
       })
       .catch((err) => {
         console.log(err, "ees");
@@ -184,11 +182,13 @@ function AdminTemplate() {
       .put("/api/roleApi/role-detail", id)
       .then((result) => {
         console.log(result.data.content, "role");
-        setRol(result.data.content.map((item :any) =>{
-          return item.roleScopes
-        }));
-          
-         console.log(rol,'roleeeeee')
+        setRol(
+          result.data.content.map((item: any) => {
+            return item.roleScopes;
+          })
+        );
+
+        console.log(rol, "roleeeeee");
       })
       .catch((err) => {
         console.log(err, "ees");
@@ -198,7 +198,7 @@ function AdminTemplate() {
     await axios
       .post("/api/userApi/delete-user", id)
       .then((result) => {
-        console.log(result.data.message)
+        console.log(result.data.message);
         swal({
           title: "Delete User success!!",
           text: `${result.data.message}`,
@@ -290,7 +290,7 @@ function AdminTemplate() {
     await axios
       .get("/api/typeApi/get-all-type")
       .then((result) => {
-       console.log(result, "");
+        console.log(result, "");
         setType(
           result.data.content.filter((lv: any) => {
             return lv.typeLevel >= typeFilter[0].typeLevel;
@@ -327,9 +327,11 @@ function AdminTemplate() {
       .post(`/api/userApi/get-all-user`, id)
       .then((result) => {
         console.log(result.data.content);
-        setUserRoleDetail(result.data.content.data.map((roleId:any) => { 
-          return roleId.roleScopes
-         }));
+        setUserRoleDetail(
+          result.data.content.data.map((roleId: any) => {
+            return roleId.roleScopes;
+          })
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -653,7 +655,6 @@ function AdminTemplate() {
 
                               <Select
                                 isMulti={true}
-                                instanceId='userRole'
                                 options={roleOptionEdit[0]}
                                 className="w-100 rounded-md shadow-sm mb-1  "
                                 components={animatedComponents}
@@ -665,12 +666,7 @@ function AdminTemplate() {
                                     }),
                                   });
                                   console.log(rol, "user");
-                                  console.log(
-                                    e.map((item: any) => {
-                                      return item.value;
-                                    }),
-                                    "e"
-                                  );
+
                                   getRoleDetail({
                                     id: e.map((item: any) => {
                                       return item.value;
@@ -692,7 +688,6 @@ function AdminTemplate() {
                                           }
                                         ),
                                       });
-                                      console.log(relaUser, "user");
                                     })
                                     .catch((err) => {
                                       console.log(err);
@@ -713,7 +708,6 @@ function AdminTemplate() {
                                 className="w-100 rounded-md shadow-sm mb-1 "
                                 options={typeOptionEdit[0]}
                                 components={animatedComponents}
-                                instanceId="userType"
                                 isMulti={true}
                                 onChange={async (e: any) => {
                                   setFormSignUp({
@@ -734,9 +728,8 @@ function AdminTemplate() {
                                     .then((result) => {
                                       setRelaType({
                                         ...relaType,
-                                        relaType: result.data.content
+                                        relaType: result.data.content,
                                       });
-                                    
                                     })
                                     .catch((err) => {
                                       console.log(err);
@@ -748,7 +741,31 @@ function AdminTemplate() {
                           </div>
                         </form>
                         <div className="px-3">
-                          {rol.map((item:any) => item).flatMap((item:any) => item).includes("type") || rol.map((item:any) => item).flatMap((item:any) => item).includes("all") ? (
+                          {rol
+                            .map((item: any) => {
+                              // console.log(item?.length, "item.length");
+
+                              if (item.length > 1) {
+                                return item?.split(",")
+                              
+                              } else {
+                                return item.split(",");
+                              }
+                            })
+                            .flatMap((item: any) => item)
+                            .includes("type") ||
+                          rol
+                            .map((item: any) => {
+                              if (rol.length > 1) {
+                                return item.map((value: any) =>
+                                  value.split(",")
+                                );
+                              } else {
+                                return item.split(",");
+                              }
+                            })
+                            .flatMap((item: any) => item)
+                            .includes("all") ? (
                             <div>
                               <label
                                 htmlFor="relatedType"
@@ -790,37 +807,37 @@ function AdminTemplate() {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {relaType.relaType.map((item: any,index:number) => {
-                                          return (
-                                            <tr key={item.id}>
-                                              <td>
-                                                <input
-                                                  name="relaType"
-                                                  type="checkbox"
-                                                  value={item.id}
-                                                  onChange={
-                                                    handleChangeChecked
-                                                  }
-                                                />
-                                              </td>
-                                              <td style={{ fontSize: 12 }}>
-                                                {index++}
-                                              </td>
-                                              <td style={{ fontSize: 12 }}>
-                                                {item.userFirstName}
-                                              </td>
-                                              <td style={{ fontSize: 12 }}>
-                                                {item.userLastName}
-                                              </td>
-                                              <td style={{ fontSize: 12 }}>
-                                                {item.userEmail}
-                                              </td>
-                                              <td style={{ fontSize: 12 }}>
-                                                {item.userPhoneNumber}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
+                                    {relaType.relaType.map(
+                                      (item: any, index: number) => {
+                                        return (
+                                          <tr key={item.id}>
+                                            <td>
+                                              <input
+                                                name="relaType"
+                                                type="checkbox"
+                                                value={item.id}
+                                                onChange={handleChangeChecked}
+                                              />
+                                            </td>
+                                            <td style={{ fontSize: 12 }}>
+                                              {index++}
+                                            </td>
+                                            <td style={{ fontSize: 12 }}>
+                                              {item.userFirstName}
+                                            </td>
+                                            <td style={{ fontSize: 12 }}>
+                                              {item.userLastName}
+                                            </td>
+                                            <td style={{ fontSize: 12 }}>
+                                              {item.userEmail}
+                                            </td>
+                                            <td style={{ fontSize: 12 }}>
+                                              {item.userPhoneNumber}
+                                            </td>
+                                          </tr>
+                                        );
+                                      }
+                                    )}
                                   </tbody>
                                 </table>
                               </div>
@@ -829,7 +846,28 @@ function AdminTemplate() {
                             ""
                           )}
 
-                          {rol.map((item:any) => item).flatMap((item:any) => item).includes("point") || rol.map((item:any) => item).flatMap((item:any) => item).includes("all")? (
+                          {rol
+                            .map((item: any) => {
+                              // console.log(rol?.length, "item.length");
+
+                              if (item.length > 1) {
+                                return item?.split(",")
+                              } else {
+                                return item.split(",");
+                              }
+                            })
+                            .flatMap((item: any) => item)
+                            .includes("point") ||
+                          rol
+                            .map((item: any) => {
+                              if (item.length > 1) {
+                                return item?.split(',')
+                              } else {
+                                return item.split(",");
+                              }
+                            })
+                            .flatMap((item: any) => item)
+                            .includes("all") ? (
                             <div>
                               <label
                                 htmlFor="relatedUser"
@@ -1091,8 +1129,7 @@ function AdminTemplate() {
                                     data-bs-dismiss="modal"
                                     className="del-user-button"
                                     onClick={() => {
-                        
-                                      delUser( { id: user.id });
+                                      delUser({ id: user.id });
                                     }}
                                   >
                                     Delete
@@ -1487,7 +1524,6 @@ function AdminTemplate() {
                             options={roleOptionEdit[0]}
                             isMulti
                             className="select-option"
-                            instanceId='userRole'
                             components={animatedComponents}
                             onChange={(e) => {
                               let data = e.map((e: any) => e.value);
@@ -1537,7 +1573,6 @@ function AdminTemplate() {
                           <Select
                             options={typeOptionEdit[0]}
                             isMulti
-                            instanceId='userType'
                             components={animatedComponents}
                             onChange={(e) => {
                               let data = e.map((e: any) => e.value);
