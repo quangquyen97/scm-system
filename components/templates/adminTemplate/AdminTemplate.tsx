@@ -132,7 +132,7 @@ function AdminTemplate() {
   console.log(search);
   const [roles, setRoles] = React.useState([]);
   const [roleDetail, setRoleDetail] = React.useState([]);
-  const [rol, setRol] = React.useState([]);
+  const [rol, setRol]: any = React.useState([]);
   let userInfo = {
     userDayOfBirth: "",
     userFirstName: "",
@@ -181,14 +181,16 @@ function AdminTemplate() {
     await axios
       .put("/api/roleApi/role-detail", id)
       .then((result) => {
-        console.log(result.data.content, "role");
-        setRol(
-          result.data.content.map((item: any) => {
-            return item.roleScopes;
-          })
-        );
-
-        console.log(rol, "roleeeeee");
+       
+        let data =  result.data.content.length >1 ? result.data.content.map((item: any) => {
+          return item.map((value:any)=>{
+            return value.roleScopes
+          });
+      }): result.data.content.map((item: any) => {
+              return item.roleScopes
+        });
+        setRol(data);
+        console.log(data,'roleeeee')
       })
       .catch((err) => {
         console.log(err, "ees");
@@ -655,6 +657,7 @@ function AdminTemplate() {
 
                               <Select
                                 isMulti={true}
+                                instanceId="userRole"
                                 options={roleOptionEdit[0]}
                                 className="w-100 rounded-md shadow-sm mb-1  "
                                 components={animatedComponents}
@@ -665,7 +668,6 @@ function AdminTemplate() {
                                       return item.value;
                                     }),
                                   });
-                                  console.log(rol, "user");
 
                                   getRoleDetail({
                                     id: e.map((item: any) => {
@@ -684,10 +686,15 @@ function AdminTemplate() {
                                         ...relaUser,
                                         relaUser: result.data.content.map(
                                           (item: any) => {
+                                            console.log(item, "item");
                                             return item;
                                           }
                                         ),
                                       });
+                                      console.log(
+                                        result.data.content,
+                                        "relaUser"
+                                      );
                                     })
                                     .catch((err) => {
                                       console.log(err);
@@ -709,6 +716,7 @@ function AdminTemplate() {
                                 options={typeOptionEdit[0]}
                                 components={animatedComponents}
                                 isMulti={true}
+                                instanceId="userType"
                                 onChange={async (e: any) => {
                                   setFormSignUp({
                                     ...formSignup,
@@ -741,31 +749,8 @@ function AdminTemplate() {
                           </div>
                         </form>
                         <div className="px-3">
-                          {rol
-                            .map((item: any) => {
-                              // console.log(item?.length, "item.length");
-
-                              if (item.length > 1) {
-                                return item?.split(",")
-                              
-                              } else {
-                                return item.split(",");
-                              }
-                            })
-                            .flatMap((item: any) => item)
-                            .includes("type") ||
-                          rol
-                            .map((item: any) => {
-                              if (rol.length > 1) {
-                                return item.map((value: any) =>
-                                  value.split(",")
-                                );
-                              } else {
-                                return item.split(",");
-                              }
-                            })
-                            .flatMap((item: any) => item)
-                            .includes("all") ? (
+                          {rol.map((item: any) => item.includes("type")) ||
+                          rol.map((item: any) => item.includes("all")) ? (
                             <div>
                               <label
                                 htmlFor="relatedType"
@@ -846,28 +831,8 @@ function AdminTemplate() {
                             ""
                           )}
 
-                          {rol
-                            .map((item: any) => {
-                              // console.log(rol?.length, "item.length");
-
-                              if (item.length > 1) {
-                                return item?.split(",")
-                              } else {
-                                return item.split(",");
-                              }
-                            })
-                            .flatMap((item: any) => item)
-                            .includes("point") ||
-                          rol
-                            .map((item: any) => {
-                              if (item.length > 1) {
-                                return item?.split(',')
-                              } else {
-                                return item.split(",");
-                              }
-                            })
-                            .flatMap((item: any) => item)
-                            .includes("all") ? (
+                          {rol.map((item: any) => item.includes("point")) ||
+                          rol.map((item: any) => item.includes("all")) ? (
                             <div>
                               <label
                                 htmlFor="relatedUser"
@@ -1001,11 +966,6 @@ function AdminTemplate() {
                     </a>
                   </span>
                 </div>
-              </div>
-              <div className="search-by-tag">
-                {/* <Select value={sorting} onChange={handleChangeSorting} sx={{''}}>
-
-                    </Select> */}
               </div>
             </div>
           </div>
@@ -1523,6 +1483,7 @@ function AdminTemplate() {
                           <Select
                             options={roleOptionEdit[0]}
                             isMulti
+                            instanceId="userRoleCreate"
                             className="select-option"
                             components={animatedComponents}
                             onChange={(e) => {
@@ -1573,6 +1534,7 @@ function AdminTemplate() {
                           <Select
                             options={typeOptionEdit[0]}
                             isMulti
+                            instanceId="userTypeCreate"
                             components={animatedComponents}
                             onChange={(e) => {
                               let data = e.map((e: any) => e.value);
