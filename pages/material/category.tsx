@@ -1,5 +1,6 @@
 import React from "react";
-import Category from "../../components/material/category/category";
+import Category from "../../components/material/category/Category";
+
 
 function category() {
   return (
