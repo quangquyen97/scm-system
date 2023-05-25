@@ -56,7 +56,7 @@ function Header() {
                 >
                   <img
                     className="w-8 h-8 rounded-full"
-                    src="77972443.jfif"
+                    src="/77972443.jfif"
                     alt="user photo"
                   />
                 </button>

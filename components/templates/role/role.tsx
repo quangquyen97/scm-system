@@ -192,11 +192,12 @@ function Role() {
             <div className="middle-menu">
               <div>
                 <div className="btn-create relative">
-                  <span>All ({role.length})</span>
+                  <span>All ({role.length}) </span>
                   <button
                     data-bs-toggle="modal"
                     data-bs-target="#createRoleModal"
                     type="button"
+                    className="--button-create"
                     onClick={() => {
                       if (localStorage.getItem("userName")) {
                         let userScopeLogin: any = decode(

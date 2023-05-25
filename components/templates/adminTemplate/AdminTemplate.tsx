@@ -403,14 +403,14 @@ function AdminTemplate() {
                     setSearch(e.target.value);
                   }}
                 />
-                <img src="search-icon.svg" alt="search icon" />
+                <img src="public/search-icon.svg" alt="search icon" />
               </div>
             </div>
             <div className="middle-menu">
               <div>
                 <div className="btn-create relative">
                   <span>All ({users.length}) </span>
-                  <button
+                  <button className="--button-create"
                     data-bs-toggle="modal"
                     data-bs-target="#createUserModal"
                     type="button"

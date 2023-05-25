@@ -160,6 +160,7 @@ function Type() {
                 <div className="btn-create relative">
                   <span>All ({type.length})</span>
                   <button
+                  className="--button-create"
                     data-bs-toggle="modal"
                     data-bs-target="#createRoleModal"
                     type="button"

@@ -16,16 +16,7 @@ export default async function getAllRole(
 ) {
   try {
     if (req.method == "PUT") {
-      // let { id } = req.body;
-      // 
-      // let data = await model.Roles.findAll({
-      //   where: {
-      //     id,
-      //   },
-      // });
       let { id } = req.body;
-
-
       let data: any = []
       if (id.length > 1) {
         for (let i = 0; i < id.length; i++) {
@@ -47,9 +38,7 @@ export default async function getAllRole(
       successCode(res, data, "Roles detail");
     } else if (req.method === "POST") {
       let { userRole } = req.body;
-
       let data: any = []
-
       if (userRole.length > 1) {
         for (let i = 0; i <= userRole.length; i++) {
           await model.Users.findAll({
