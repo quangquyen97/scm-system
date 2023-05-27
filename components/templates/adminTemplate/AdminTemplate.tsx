@@ -403,7 +403,7 @@ function AdminTemplate() {
                     setSearch(e.target.value);
                   }}
                 />
-                <img src="public/search-icon.svg" alt="search icon" />
+                <img src="/search-icon.svg" alt="search icon" />
               </div>
             </div>
             <div className="middle-menu">
@@ -585,8 +585,8 @@ function AdminTemplate() {
                                   }}
                                   src={
                                     isPasswordViewed2
-                                      ? "show-pass.svg"
-                                      : "no-show-pass.svg"
+                                      ? "/show-pass.svg"
+                                      : "/no-show-pass.svg"
                                   }
                                 />
                               </span>
@@ -633,8 +633,8 @@ function AdminTemplate() {
                                   }}
                                   src={
                                     isPasswordViewed
-                                      ? "show-pass.svg"
-                                      : "no-show-pass.svg"
+                                      ? "/show-pass.svg"
+                                      : "/no-show-pass.svg"
                                   }
                                 />
                               </span>
@@ -962,7 +962,7 @@ function AdminTemplate() {
                     }}
                   >
                     <a href="#">
-                      <img src="download-user.svg" alt="download icon" />
+                      <img src="/download-user.svg" alt="download icon" />
                     </a>
                   </span>
                 </div>
@@ -1040,7 +1040,7 @@ function AdminTemplate() {
                             data-bs-target="#exampleModal"
                             type="button"
                           >
-                            <img src="trash-icon.svg" alt="delete user" />
+                            <img src="/trash-icon.svg" alt="delete user" />
                           </button>
 
                           <div
@@ -1061,7 +1061,7 @@ function AdminTemplate() {
                                     id="exampleModalLabel"
                                   >
                                     <img
-                                      src="warning-icon.svg"
+                                      src="/warning-icon.svg"
                                       alt="warning icon"
                                     />{" "}
                                     Delete this User?
@@ -1112,7 +1112,7 @@ function AdminTemplate() {
                               console.log(userDetail);
                             }}
                           >
-                            <img src="edit-icon.svg" alt="edit user" />
+                            <img src="/edit-icon.svg" alt="edit user" />
                           </button>
                         </div>
                         <div>
@@ -1130,7 +1130,7 @@ function AdminTemplate() {
                               // let role =
                             }}
                           >
-                            <img src="view-icon.svg" alt="view user" />
+                            <img src="/view-icon.svg" alt="view user" />
                           </button>
                         </div>
                       </td>

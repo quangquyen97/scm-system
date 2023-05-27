@@ -208,8 +208,8 @@ export default function LoginForm() {
                         }}
                         src={
                           isPasswordViewed
-                            ? "show-pass.svg"
-                            : "no-show-pass.svg"
+                            ? "/show-pass.svg"
+                            : "/no-show-pass.svg"
                         }
                       />
                     </span>
