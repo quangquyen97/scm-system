@@ -195,7 +195,7 @@ function Material() {
               <input
                 type="text"
                 id="search-bar"
-                placeholder="Search by email"
+                placeholder="Search..."
                 onChange={(e) => {
                   // setSearch(e.target.value);
                 }}
@@ -228,13 +228,13 @@ function Material() {
             <table className="w-full">
               <thead>
                 <tr className="text-center ">
-                  <th></th>
-                  <th>Name</th>
-                  <th>Category</th>
-                  <th>Safe Quantity</th>
-                  <th>Status</th>
-                  <th>Day Update</th>
-                  <th></th>
+                  <th className='header-select'></th>
+                  <th className='header-name'>Name</th>
+                  <th className='header-category'>Category</th>
+                  <th className='header-quantity'>Safe Quantity</th>
+                  <th className='header-status'>Status</th>
+                  <th className='header-update'>Day Update</th>
+                  <th className='header-option'></th>
                 </tr>
               </thead>
               <tbody>

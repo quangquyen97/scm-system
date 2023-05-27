@@ -145,8 +145,8 @@ export default function Sidebar() {
                     }}
                     className={
                       !isActive
-                        ? "flex w-100 items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 isAcTive"
-                        : "flex w-100 items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        ? "flex w-100 items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 isAcTive cursor-pointer"
+                        : "flex w-100 items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                     }
                   >
                     <span className="flex-1 ml-3 whitespace-nowrap">
@@ -245,8 +245,8 @@ export default function Sidebar() {
                     }}
                     className={
                       !isActive
-                        ? "flex w-100 items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 isAcTive"
-                        : "flex w-100 items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                        ? "flex w-100 items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 isAcTive cursor-pointer"
+                        : "flex w-100 items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                     }
                   >
                     <span className="flex-1 ml-3 whitespace-nowrap">
