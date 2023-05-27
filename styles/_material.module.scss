@@ -4,11 +4,19 @@
     background: #ffffff;
     border-bottom: 2px solid $main-color;
 }
-
+.page-layout {
+    background: #f7fbfa;
+    padding: 10px;
+}
 .material-main {
     margin-top: 30px;
 }
-
+.layout-create {
+}
+.form-header{
+    height:  fit-content;
+    margin-bottom: -50px;
+}
 .item-material {
     transition: all 0.2s ease-in-out;
     text-align: left;
@@ -131,5 +139,168 @@
         background-position-y: center;
         background-position-x: 37px;
     }
+}
 
+//CREATE MATERIAL
+
+.button-switch-create {
+    height: 56px;
+    width: 189px;
+    background: rgba(224, 224, 224, 0.5);
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 22px;
+}
+.button-switch-create {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    margin-left: 50px;
+    span {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 22px;
+        cursor: pointer;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        width: 50%;
+        transition: all 0.4s ease-in-out;
+        &:hover {
+            color: #0f948b;
+            transition: all 0.4s ease-in-out;
+        }
+    }
+    span:nth-child(3) {
+        position: absolute;
+        left: 4%;
+        bottom: 50%;
+        transform: translateY(50%);
+        width: 81px;
+        height: 45px;
+        z-index: 1;
+        background-color: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        transition: all 0.4s ease-in-out;
+    }
+    .switch-active {
+        left: 53% !important;
+        transition: all 0.4s ease-in-out;
+    }
+    .switch-content {
+        color: #20a89e;
+        transition: all 0.3s ease-in-out;
+    }
+}
+.form-create {
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    height: 650px;
+    margin: 20px;
+    padding: 50px;
+    .form-detail {
+        height: 100%;
+    }
+    .col-lg-6 {
+        padding: 0;
+        align-items: baseline;
+    }
+    .row {
+        margin: 0;
+        padding: 0;
+    }
+    label {
+        width: 30%;
+        font-style: normal;
+        font-family: "Rubik";
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 22px;
+        color: #012927;
+    }
+    input {
+        background: #ffffff;
+        border: 1px solid #e9e9e9;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 4px;
+        transition: all 0.3s ease-in-out 0.2s;
+        &::placeholder {
+            font-family: "Inter";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 22px;
+            color: #b3b3b3;
+        }
+        &:focus-visible {
+            outline: none;
+        }
+    }
+    .group-input {
+        display: inline-block;
+        position: relative;
+        .error-message {
+            position: absolute;
+            bottom: -25px;
+            font-family: "Inter";
+            font-style: normal;
+            font-weight: 600;
+            font-size: 13px;
+            color: #9c4141;
+            line-height: 22px;
+            left: 10px;
+        }
+    }
+    .tag-name {
+        background: #ffffff;
+        border: 1px solid #e9e9e9;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 4px;
+        width: fit-content;
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        padding:  4px 17px 4px 9px;
+        line-height: 22px;
+        color: #B3B3B3;
+        position: relative;
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        span{
+            position: absolute;
+            right: -3px;
+            top: -4px;
+            scale: 0.8;
+            cursor: pointer;
+        }
+    }
+    
+}
+.material-header{
+    background: unset;
+}
+.--button-create{
+    &:hover{
+        color:white
+    }
+}
+.form-relative{
+    position: relative;
+}
+.create-button{
+    position: absolute;
+    display: inline-block;
+    width: fit-content;
+    padding: 10px 10px;
+    bottom: 0;
+    right: 0;
+}
+.material-create-footer {
+    background-color: unset;
 }

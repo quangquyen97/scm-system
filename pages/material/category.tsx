@@ -1,5 +1,5 @@
 import React from "react";
-import Category from "../../components/material/category/Category";
+import Category from "../../components/material-group/category/Category";
 
 
 function category() {

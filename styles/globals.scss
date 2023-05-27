@@ -12,7 +12,6 @@ $contrast-color: #fdcb17;
   visibility: unset;
 }
 
-
 ::-webkit-scrollbar {
   width: 3px;
   height: 10px;
@@ -48,6 +47,13 @@ body {
     transition: all 0.3s ease-in-out;
   }
 }
+input[type="text"]:focus {
+  --tw-ring-color: unset;
+  --tw-ring-offset-shadow: unset;
+  --tw-ring-shadow: unset;
+  box-shadow: unse;
+  border-color: unset;
+}
 .search-bar {
   display: flex;
   width: 50%;
@@ -74,7 +80,7 @@ body {
   font-size: 24px;
   line-height: 24px;
   text-transform: uppercase;
-  margin:0;
+  margin: 0;
 }
 @import "./admin-template.module.scss";
 @import "./button.modules.scss";
@@ -83,4 +89,4 @@ body {
 @import "./main-layout.module.scss";
 @import "./side-bar.module.scss";
 @import "./material.module.scss";
-@import "./font.module.scss"
+@import "./font.module.scss";

@@ -1,9 +1,5 @@
-import React, {
-  HTMLAttributes,
-  HtmlHTMLAttributes,
-  useEffect,
-  useState,
-} from "react";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import Pagination from "../../panigation";
 
 function Material() {
@@ -171,24 +167,22 @@ function Material() {
         ? tdIndex?.classList.add("input-checked-table")
         : tdIndex?.classList.remove("input-checked-table");
       inputIndex?.checked ? setCount(count + 1) : setCount(count - 1);
-      if(count === 1){
+      if (count === 1) {
         deleteIndex?.classList.remove("hidden");
-      }else if(count > 1 ){
+      } else if (count > 1) {
         deleteIndex?.classList.add("hidden");
         optiionIndex?.classList.remove("hidden");
-      }else{
+      } else {
         deleteIndex?.classList.add("hidden");
         optiionIndex?.classList.add("hidden");
       }
     }
   };
 
-  useEffect(() => { 
-    
-  }, [count]);
+  useEffect(() => {}, [count]);
   return (
     <>
-      <div className="material page-layout">
+      <div className="material">
         <div className="material-header page-header">
           <div className="row">
             <div className="col-lg-6 flex align-items-center">
@@ -218,14 +212,12 @@ function Material() {
           <div className="top-main row ">
             <div className="side-top-main col-lg-6 relative d-flex gap-1 align-items-center">
               <span>All (20) </span>
-              <button
+              <Link
+                href="create-material"
                 className="--button-create"
-                data-bs-toggle="modal"
-                data-bs-target="#createUserModal"
-                type="button"
               >
                 Create new material
-              </button>
+              </Link>
 
               <a href="#" className="inline-block">
                 <img src="/download-user.svg" alt="download icon" />
@@ -309,34 +301,37 @@ function Material() {
                               <path
                                 d="M8.57143 7V4.8C8.57143 4.32261 8.75204 3.86477 9.07353 3.52721C9.39502 3.18964 9.83106 3 10.2857 3H13.7143C14.1689 3 14.605 3.18964 14.9265 3.52721C15.248 3.86477 15.4286 4.32261 15.4286 4.8V7M19 7L18 19.2C18 19.6774 17.8194 20.1352 17.4979 20.4728C17.1764 20.8104 16.7404 21 16.2857 21H7.71429C7.25963 21 6.82359 20.8104 6.5021 20.4728C6.18061 20.1352 6 19.6774 6 19.2L5 7H19Z"
                                 stroke="#14181F"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                               <path
                                 d="M4 7H5.77778H20"
                                 stroke="#14181F"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                               <path
                                 d="M10 11V16"
                                 stroke="#14181F"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                               <path
                                 d="M14 11V16"
                                 stroke="#14181F"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                               />
                             </svg>
                           </div>
-                          <div className="more-option-material hidden" id={`option${index}`}>
+                          <div
+                            className="more-option-material hidden"
+                            id={`option${index}`}
+                          >
                             <svg
                               className="dropdown-toggle"
                               href="#"
@@ -352,25 +347,31 @@ function Material() {
                               <path
                                 d="M3.88889 1.55241C5.06098 1.55241 6.27778 2.66371 6.27778 4.38155C6.27778 6.0994 5.06098 7.21069 3.88889 7.21069C2.7168 7.21069 1.5 6.0994 1.5 4.38155C1.5 2.66371 2.7168 1.55241 3.88889 1.55241ZM14 1.55241C15.1721 1.55241 16.3889 2.66371 16.3889 4.38155C16.3889 6.0994 15.1721 7.21069 14 7.21069C12.8279 7.21069 11.6111 6.0994 11.6111 4.38155C11.6111 2.66371 12.8279 1.55241 14 1.55241ZM24.1111 1.55241C25.2832 1.55241 26.5 2.66371 26.5 4.38155C26.5 6.0994 25.2832 7.21069 24.1111 7.21069C22.939 7.21069 21.7222 6.0994 21.7222 4.38155C21.7222 2.66371 22.939 1.55241 24.1111 1.55241Z"
                                 stroke="#191414"
-                                stroke-width="3"
+                                strokeWidth="3"
                               />
                             </svg>
                             <div className="dropdown">
                               <ul className="dropdown-menu">
                                 <li>
                                   <a className="dropdown-item" href="#">
-                                    Action
+                                    Delete
                                   </a>
                                 </li>
                                 <li>
-                                  <a className="dropdown-item" href="#">
-                                    Another action
-                                  </a>
+                                  <Link
+                                    href="edit-material"
+                                    className="dropdown-item"
+                                  >
+                                    Edit
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a className="dropdown-item" href="#">
-                                    Something else here
-                                  </a>
+                                <Link
+                                    href="view-material"
+                                    className="dropdown-item"
+                                  >
+                                    View Detail
+                                  </Link>
                                 </li>
                               </ul>
                             </div>

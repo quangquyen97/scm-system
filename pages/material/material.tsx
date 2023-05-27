@@ -1,5 +1,5 @@
 import React from 'react'
-import Material from '../../components/material/material/Material'
+import Material from '../../components/material-group/material/Material'
 
 function material() {
   return (

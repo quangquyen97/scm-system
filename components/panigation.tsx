@@ -28,8 +28,8 @@ const Pagination = ({
                 <path
                   d="M5 9L1 5L5 1"
                   stroke="#343A40"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </span>
@@ -59,8 +59,8 @@ const Pagination = ({
                 <path
                   d="M1 9L5 5L1 1"
                   stroke="#343A40"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             </span>
