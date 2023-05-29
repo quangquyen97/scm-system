@@ -60,61 +60,21 @@
   table {
     width: 100%;
     margin: auto;
-    thead {
-      background-color: #d9d9d9;
-      tr {
-        padding: 0 20px;
-        th {
-          font-family: "Inter";
-          font-style: normal;
-          padding: 9px 0;
-          font-weight: 400;
-          font-size: 20px;
-          line-height: 22px;
-          color: #000000;
-          &:nth-child(2) {
-            text-align: start;
+    td:last-child {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      line-height: 1;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+    
+        button {
+          &:hover {
+            background-color: wheat;
+            transition: all 0.3s ease-in-out;
           }
-        }
-      }
-    }
-    tbody {
-      tr {
-        text-align: center;
-        &:nth-child(even) {
-          background-color: #d9d9d9;
-        }
-        &:nth-child(odd) {
-          background-color: #ffffff;
-        }
-        td {
-          text-align: left;
-          font-family: "Inter";
-          font-style: normal;
-          font-weight: 200;
-          font-size: 17px;
-          line-height: 22px;
-          color: #000000;
-          padding: 9px 0;
-          &:nth-child(2) {
-            text-align: left;
-          }
-          &:nth-child(8) {
-            display: flex;
-            justify-content: space-around;
-          }
-          button {
-            font-size: 15px;
-            font-weight: 400;
-            color: white;
-          }
-          .del-btn,
-          .edit-btn,
-          .view-btn {
-            &:hover {
-              background: none;
-            }
-          }
+          border-radius: 6px;
+          transition: all 0.3s ease-in-out;
         }
       }
     }
@@ -231,9 +191,9 @@ label {
     font-weight: 300;
     font-size: 14px;
     background: none;
-    &:hover{
-    border-radius: 2px;
-    color: black;
+    &:hover {
+      border-radius: 2px;
+      color: black;
     }
   }
   li:first-child,

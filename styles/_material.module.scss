@@ -58,10 +58,10 @@
         border-radius: 16px;
     }
 }
-.checkbox-material{
+.checkbox-material {
     input {
-        border-radius: 50%;}
-
+        border-radius: 50%;
+    }
 }
 input {
     &:focus {
@@ -370,6 +370,7 @@ input {
     }
     &:nth-child(3) {
         label {
+            cursor: pointer;
             width: 282px;
             height: 68px;
             background: #ededed;
@@ -459,6 +460,7 @@ input {
     }
     label {
         position: absolute;
+        cursor: pointer;
         left: 50%;
         right: 50%;
         transform: translate(-50%, 50%);
@@ -477,6 +479,8 @@ input {
         border-radius: 8px;
         width: 100%;
         height: 100%;
+        cursor: pointer;
+
     }
     input[type="checkbox"]:checked {
         background-color: #fdcf6f;
