@@ -16,7 +16,7 @@ import {
   Legend,
   InteractionItem,
   BarElement,
-} from "chart.js";
+} from "chart.js/auto";
 import type { ChartData, ChartOptions } from "chart.js";
 import axios from "axios";
 import CryptoSummary from "./CryptoSummary";
