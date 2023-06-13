@@ -7,7 +7,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("TMURs", {
       materialTypeId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         
       },

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { object, string, date } from "yup";
 import Select from "react-select";
@@ -6,36 +6,15 @@ import makeAnimated from "react-select/animated";
 import swal from "sweetalert";
 import { decode } from "../../../middleware/auth";
 import Pagination from "../../panigation";
-import { RoleScopes } from "../../../models/roles";
 import ExportUserToCsv from "./ExportUserToCsv";
-import { user } from "../../../seeders/user";
+import { notifiSuccess } from "../../toastify-noti/notifi";
+import { ToastContainer } from "react-toastify";
 
 const animatedComponents = makeAnimated();
 
-const RolePermOption = [
-  { value: "perUser_view", label: "USER_VIEW" },
-  { value: "perUser_add", label: "USER_ADD" },
-  { value: "perUser_edit", label: "USER_EDIT" },
-  { value: "perUser_delete", label: "USER_DELETE" },
-  { value: "perScopes_view", label: "SCOPES_VIEW" },
-  { value: "perScopes_add", label: "SCOPES_ADD" },
-  { value: "perScopes_edit", label: "SCOPES_EDIT" },
-  { value: "perScopes_delete", label: "SCOPES_DELETE" },
-  { value: "perMaterial_view", label: "MATERIAL_VIEW" },
-  { value: "perMaterial_add", label: "MATERIAL_ADD" },
-  { value: "perMaterial_edit", label: "MATERIAL_EDIT" },
-  { value: "perMaterial_delete", label: "MATERIAL_DELETE" },
-];
-const roleScopesOption = [
-  { value: "own", label: "OWN" },
-  { value: "point", label: "POINT" },
-  { value: "type", label: "TYPE" },
-  { value: "all", label: "ALL" },
-];
-
 function AdminTemplate() {
-  const [users, setUsers] = React.useState([]);
-  const [userDetail, setUserDetail] = React.useState({
+  const [users, setUsers] = useState([]);
+  const [userDetail, setUserDetail] = useState({
     relatedType: 1,
     relatedUser: 2,
     userAdress: "",
@@ -47,9 +26,9 @@ function AdminTemplate() {
     userRole: "",
     userType: "",
   });
-  const [relaType, setRelaType] = React.useState({ relaType: [] });
-  const [relaUser, setRelaUser] = React.useState({ relaUser: [] });
-  const [formSignup, setFormSignUp] = React.useState({
+  const [relaType, setRelaType] = useState({ relaType: [] });
+  const [relaUser, setRelaUser] = useState({ relaUser: [] });
+  const [formSignup, setFormSignUp] = useState({
     userType: [""],
     userEmail: "",
     userPassword: "",
@@ -95,14 +74,18 @@ function AdminTemplate() {
     }
   };
   const getAllUser = async () => {
-    const { data: res } = await axios.get("/api/userApi/get-all-user");
-    setUsers(res.content.usersPerPage);
+    await axios
+      .get("/api/userApi/get-all-user")
+      .then((result) => {
+        setUsers(result.data.content.usersPerPage);
+      })
+      .catch((err) => {});
   };
 
-  const [isPasswordViewed, setIsPasswordViewed] = React.useState(false);
-  const [isPasswordViewed2, setIsPasswordViewed2] = React.useState(false);
+  const [isPasswordViewed, setIsPasswordViewed] = useState(false);
+  const [isPasswordViewed2, setIsPasswordViewed2] = useState(false);
 
-  const [formUpdate, setformUpdate] = React.useState({
+  const [formUpdate, setformUpdate] = useState({
     userType: 0,
     userEmail: "",
     userPassword: "",
@@ -125,11 +108,11 @@ function AdminTemplate() {
     setFormSignUp({ ...formSignup, [name]: e.target.value });
     setConfirmPass({ ...confirmPass, [name]: e.target.value });
   };
-  const [isError, setIsError] = React.useState(false);
-  const [search, setSearch] = React.useState("");
-  const [roles, setRoles] = React.useState([]);
-  const [roleDetail, setRoleDetail] = React.useState([]);
-  const [rol, setRol]: any = React.useState([]);
+  const [isError, setIsError] = useState(false);
+  const [search, setSearch] = useState("");
+  const [roles, setRoles] = useState([]);
+  const [roleDetail, setRoleDetail] = useState([]);
+  const [rol, setRol]: any = useState([]);
   let userInfo = {
     userDayOfBirth: "",
     userFirstName: "",
@@ -137,10 +120,10 @@ function AdminTemplate() {
     confirmPassword: "",
   };
 
-  const [confirmPass, setConfirmPass] = React.useState({
+  const [confirmPass, setConfirmPass] = useState({
     confirmPassword: "",
   });
-  const [typeDetail, setTypeDetail] = React.useState([]);
+  const [typeDetail, setTypeDetail] = useState([]);
   const schema = object({
     userRole: string().required(),
     userEmail: string().required().email(),
@@ -191,12 +174,7 @@ function AdminTemplate() {
     await axios
       .post("/api/userApi/delete-user", id)
       .then((result) => {
-        swal({
-          title: "Delete User success!!",
-          text: `${result.data.message}`,
-          icon: "success",
-        });
-        getAllUser();
+        notifiSuccess({ message: "Delete User success!!" });
       })
       .catch((err: any) => {});
   };
@@ -205,12 +183,7 @@ function AdminTemplate() {
     await axios
       .put("api/update/update-user", data)
       .then((result) => {
-        swal({
-          title: "Update User success!!",
-          text: `${result}`,
-          icon: "success",
-        });
-        getAllUser();
+        notifiSuccess({ message: "Update User success!!" });
       })
       .catch((err) => {});
   };
@@ -220,12 +193,7 @@ function AdminTemplate() {
       await axios
         .post("/api/userApi/signup", data)
         .then((result) => {
-          swal({
-            title: "Create New User success!!",
-            text: `CONGRATULATION`,
-            icon: "success",
-          });
-          getAllUser();
+          notifiSuccess({ message: "Create New User success!!" });
           setFormSignUp({
             userType: [""],
             userEmail: "",
@@ -245,7 +213,7 @@ function AdminTemplate() {
         });
     } catch (err) {}
   };
-  const [role, setRole] = React.useState([]);
+  const [role, setRole] = useState([]);
   const getRole = async () => {
     await axios
       .get("/api/roleApi/get-all-role")
@@ -254,12 +222,13 @@ function AdminTemplate() {
       })
       .catch((err) => {});
   };
-  const [typeFilter, setTypeFilter] = React.useState([]);
-  const [type, setType] = React.useState([]);
+  const [typeFilter, setTypeFilter] = useState([]);
+  const [type, setType] = useState([]);
   const getType = async (id: any) => {
     let typeFilter: any = [];
+    console.log(id);
     await axios
-      .put("/api/typeApi/get-all-type", { id })
+      .put("/api/typeApi/get-all-type", id)
       .then((result) => {
         typeFilter.push(result.data.content[0]);
 
@@ -296,7 +265,7 @@ function AdminTemplate() {
     }
   };
 
-  const [userRoleDetail, setUserRoleDetail] = React.useState([]);
+  const [userRoleDetail, setUserRoleDetail] = useState([]);
 
   const getUserRoleDetail = async (id: object) => {
     await axios
@@ -332,17 +301,15 @@ function AdminTemplate() {
     }),
   ];
 
-  const [id, setId] = React.useState({});
-  const [currentPage, setCurrentPage] = React.useState(1);
+  const [id, setId] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
   const lastIndex = currentPage * usersPerPage;
   const firstIndex = lastIndex - usersPerPage;
   const usersPagi = users.slice(firstIndex, lastIndex);
   const npage = Math.ceil(users.length / usersPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
-  React.useEffect(() => {
-    getAllUser();
-    getRole();
+  useEffect(() => {
     if (localStorage.getItem("userToken")) {
       let dataInfo = JSON.parse(`${localStorage.getItem("userToken")}`);
       let info: any = decode(dataInfo);
@@ -350,7 +317,11 @@ function AdminTemplate() {
       setId(info.data.id);
       getType(info.data.id);
     }
-  }, [users, roles, type]);
+  }, []);
+  useEffect(() => {
+    getAllUser();
+    getRole();
+  }, [users, roles]);
 
   return (
     <>
@@ -361,6 +332,7 @@ function AdminTemplate() {
               <div className="col-lg-6 flex align-items-center">
                 <h1 className="--title-page">USER </h1>
               </div>
+
               <div className="col-lg-6 search-bar">
                 <label htmlFor="search-bar" className="sr-only">
                   Search
@@ -1559,6 +1531,7 @@ function AdminTemplate() {
             </div>
           </div>
         </div>
+        <ToastContainer pauseOnFocusLoss={false} />
       </div>
     </>
   );
