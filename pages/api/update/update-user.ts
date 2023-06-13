@@ -27,7 +27,7 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
       let checkUser = await model.Users.findByPk(id);
       if (checkUser) {
         let userUpdate = {
-          userFirstName,
+        userFirstName,
         userEmail,
         userPassword,
         userRole,

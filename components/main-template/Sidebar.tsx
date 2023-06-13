@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import "react-calendar/dist/Calendar.css";
 import Router from "next/router";
 
 export default function Sidebar() {
-  const [value, onChange] = useState(new Date());
+  const [url, setUrl] = useState();
   const [isActive, setIsActive] = useState(true);
   const handleActive = () => {
     setIsActive(!isActive);
     console.log(isActive);
   };
-
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      let checkUrl = window.document.URL;
+      setUrl(checkUrl);
+      // return checkUrl
+    }
+  }, []);
   return (
     <>
       <aside
@@ -277,7 +283,9 @@ export default function Sidebar() {
                     href="/material/material"
                     className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <span className="flex-1 ml-3 whitespace-nowrap">Material</span>
+                    <span className="flex-1 ml-3 whitespace-nowrap">
+                      Material
+                    </span>
                   </Link>
                 </li>
                 <li>
@@ -285,7 +293,9 @@ export default function Sidebar() {
                     href="/material/category"
                     className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <span className="flex-1 ml-3 whitespace-nowrap">Category</span>
+                    <span className="flex-1 ml-3 whitespace-nowrap">
+                      Category
+                    </span>
                     <svg
                       width="7"
                       height="10"

@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { object, string, date } from "yup";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import swal from "sweetalert";
 import { decode } from "../../../middleware/auth";
 import Pagination from "../../panigation";
 import ExportUserToCsv from "./ExportUserToCsv";
-import { notifiSuccess } from "../../toastify-noti/notifi";
+import { notifiError, notifiSuccess } from "../../toastify-noti/notifi";
 import { ToastContainer } from "react-toastify";
-
+import UserTable from "./UserTable";
 const animatedComponents = makeAnimated();
 
 function AdminTemplate() {
@@ -73,23 +72,23 @@ function AdminTemplate() {
       }
     }
   };
-  const getAllUser = async () => {
+  const getAllUser = useCallback(async () => {
     await axios
       .get("/api/userApi/get-all-user")
       .then((result) => {
         setUsers(result.data.content.usersPerPage);
       })
       .catch((err) => {});
-  };
+  },[])
 
   const [isPasswordViewed, setIsPasswordViewed] = useState(false);
   const [isPasswordViewed2, setIsPasswordViewed2] = useState(false);
 
   const [formUpdate, setformUpdate] = useState({
-    userType: 0,
+    userType: [""],
     userEmail: "",
     userPassword: "",
-    userRole: 0,
+    userRole: [""],
     userPhoneNumber: "",
     userFirstName: "",
     userLastName: "",
@@ -176,7 +175,9 @@ function AdminTemplate() {
       .then((result) => {
         notifiSuccess({ message: "Delete User success!!" });
       })
-      .catch((err: any) => {});
+      .catch((err: any) => {
+        notifiError({ message: "Delete User Failed!!!" });
+      });
   };
 
   const editUser = async (data: object) => {
@@ -185,10 +186,12 @@ function AdminTemplate() {
       .then((result) => {
         notifiSuccess({ message: "Update User success!!" });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        notifiError({ message: "Update User Failed!!!" });
+      });
   };
 
-  const formCreateUserFetch = async (data: object) => {
+  const formCreateUserFetch = useCallback(async (data: object) => {
     try {
       await axios
         .post("/api/userApi/signup", data)
@@ -212,7 +215,7 @@ function AdminTemplate() {
           alert(`${err.response.data.message}`);
         });
     } catch (err) {}
-  };
+  },[])
   const [role, setRole] = useState([]);
   const getRole = async () => {
     await axios
@@ -267,18 +270,21 @@ function AdminTemplate() {
 
   const [userRoleDetail, setUserRoleDetail] = useState([]);
 
-  const getUserRoleDetail = async (id: object) => {
-    await axios
-      .post(`/api/userApi/get-all-user`, id)
-      .then((result) => {
-        setUserRoleDetail(
-          result.data.content.data.map((roleId: any) => {
-            return roleId.roleScopes;
-          })
-        );
-      })
-      .catch((err) => {});
-  };
+  const getUserRoleDetail = useCallback(
+    async (id: object) => {
+      await axios
+        .post(`/api/userApi/get-all-user`, id)
+        .then((result) => {
+          setUserRoleDetail(
+            result.data.content.data.map((roleId: any) => {
+              return roleId.roleScopes;
+            })
+          );
+        })
+        .catch((err) => {});
+    },
+    [userRoleDetail]
+  );
   const tryRole = [
     role?.map((rol: any, index: number) => {
       index = rol.id;
@@ -310,18 +316,17 @@ function AdminTemplate() {
   const npage = Math.ceil(users.length / usersPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
   useEffect(() => {
+    getAllUser();
+    getRole();
     if (localStorage.getItem("userToken")) {
       let dataInfo = JSON.parse(`${localStorage.getItem("userToken")}`);
       let info: any = decode(dataInfo);
       getUserRoleDetail({ id: info.data.id });
       setId(info.data.id);
-      getType(info.data.id);
+      getType({ id: info.data.id });
     }
+    // console.log(window.document.URL)
   }, []);
-  useEffect(() => {
-    getAllUser();
-    getRole();
-  }, [users, roles]);
 
   return (
     <>
@@ -613,7 +618,7 @@ function AdminTemplate() {
                                     return item.value;
                                   }),
                                 });
-
+                                console.log(formSignup.userRole);
                                 getRoleDetail({
                                   id: e.map((item: any) => {
                                     return item.value;
@@ -904,7 +909,15 @@ function AdminTemplate() {
                 </div>
               </div>
             </div>
-            <table
+            <UserTable
+              usersPagi={usersPagi}
+              search={search}
+              delUser={delUser}
+              setformUpdate={setformUpdate}
+              getUserDetail={getUserDetail}
+              getTypeDetail={getTypeDetail}
+            />
+            {/* <table
               className="table-fixed middle-main "
               style={{ minHeight: "273px" }}
             >
@@ -1066,7 +1079,7 @@ function AdminTemplate() {
                                 console.log(user.userType, "id");
                                 getTypeDetail({ id: user.userType });
                                 console.log(userDetail.userDob, "eee");
-                                // let role =
+                           
                               }}
                             >
                               <img src="/view-icon.svg" alt="view user" />
@@ -1077,7 +1090,7 @@ function AdminTemplate() {
                     );
                   })}
               </tbody>
-            </table>
+            </table> */}
           </div>
 
           <div className="material-footer">
@@ -1135,7 +1148,7 @@ function AdminTemplate() {
                             type="text"
                             value={userDetail.userFirstName}
                             readOnly
-                            className="block w-full placeholder-gray-300 border border-gray-300 px-7 py-2 text-gray-900 focus:z-10  focus:outline-none sm:text-sm rounded-md shadow-sm"
+                            className="block w-full placeholder-gray-300 `border` border-gray-300 px-7 py-2 text-gray-900 focus:z-10  focus:outline-none sm:text-sm rounded-md shadow-sm"
                             placeholder="Your first name"
                             style={{ borderRadius: 4 }}
                           />
@@ -1443,9 +1456,9 @@ function AdminTemplate() {
                               let data = e.map((e: any) => e.value);
                               setformUpdate({
                                 ...formUpdate,
-                                userRole: Number(data),
+                                userRole: data,
                               });
-                              console.log(formUpdate, "select role");
+                              console.log(formUpdate.userRole, "select role");
                             }}
                           />
                         </div>
@@ -1493,7 +1506,7 @@ function AdminTemplate() {
                               let data = e.map((e: any) => e.value);
                               setformUpdate({
                                 ...formUpdate,
-                                userType: Number(data),
+                                userType: data,
                               });
                               console.log(formUpdate, "select type");
                             }}
