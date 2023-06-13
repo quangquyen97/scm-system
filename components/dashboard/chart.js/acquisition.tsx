@@ -125,83 +125,77 @@ function Chartks() {
         )
         .then((response) => {
           //setCoinData
+          // setCoinData({
+          //   labels: response.data.prices.map((price: number[]) => {
+          //     return moment.unix(price[0] / 1000).format("MM-DD");
+          //   }),
+          //   datasets: [
+          //     {
+          //       type: "bar" as const,
+          //       label: "Dataset 1",
+          //       data: response.data.prices.map((price: number[]) => {
+          //         return price[1] / 100;
+          //       }),
+          //       borderColor: "rgb(255, 99, 132)",
+          //       backgroundColor: "rgba(255, 99, 132, 0.5)",
+          //     },
+          //     {
+          //       type: "line" as const,
+          //       label: "Dataset 2",
+          //       data: response.data.market_caps.map((market_caps: number[]) => {
+          //         return market_caps[2] ;
+          //       }),
+          //       borderColor: "yellow",
+          //       backgroundColor: "yellow",
+          //     },
+          //     {
+          //       type: "bar" as const,
+          //       label: "Dataset 3",
+          //       data: response.data.total_volumes?.map(
+          //         (total_volume: number[]) => {
+          //           return total_volume[2] ;
+          //         }
+          //       ),
+          //       borderColor: "green",
+          //       backgroundColor: "green",
+          //     },
+          //   ],
+          // });
           setCoinData({
             labels: response.data.prices.map((price: number[]) => {
               return moment.unix(price[0] / 1000).format("MM-DD");
             }),
             datasets: [
               {
-                label: "Dataset 1",
+                label: "Giá (vnd)",
+                type: "line" as const,
                 data: response.data.prices.map((price: number[]) => {
-                  return price[1];
+                  return price[1] * 100;
                 }),
                 borderColor: "rgb(255, 99, 132)",
                 backgroundColor: "rgba(255, 99, 132, 0.5)",
               },
               {
-                label: "Dataset 2",
-                data: response.data.prices.map((price: number[]) => {
-                  return price[2];
+                type: "bar" as const,
+                label: "Vốn hoá thị trường",
+                data: response.data.market_caps.map((market_cap: number[]) => {
+                  return market_cap[1] / 1100000;
                 }),
-                borderColor: "rgb(255, 99, 132)",
-                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                borderColor: "yellow",
+                backgroundColor: "yellow",
               },
               {
-                label: "Dataset 3",
-                data: response.data.datatotal_volumes?.map(
-                  (total_volume: number[]) => {
-                    return total_volume[1] / 10000;
-                  }
-                ),
-                borderColor: "rgb(255, 99, 132)",
-                backgroundColor: "rgba(255, 99, 132, 0.5)",
-              },
-
-              {
-                label: "Dataset 4",
-                data: response.data.prices?.map((price: number[]) => {
-                  return price[4];
+                type: "bar" as const,
+                label: "Tổng volume",
+                data: response.data.total_volumes.map((total_volume: number[]) => {
+                  return total_volume[1] / 10000;
                 }),
-                borderColor: "rgb(255, 99, 132)",
-                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                borderColor: "blue",
+                backgroundColor: "blue",
               },
             ],
           });
         });
-      // setCoinData({
-      //   labels: bitcoinChart.prices.map((price: number[]) => {
-      //     return moment.unix(price[0] / 1000).format("MM-DD");
-      //   }),
-      //   datasets: [
-      //     {
-      //       label: "Giá (vnd)",
-      //       type: "line" as const,
-      //       data: bitcoinChart.prices.map((price: number[]) => {
-      //         return price[1] * 100;
-      //       }),
-      //       borderColor: "rgb(255, 99, 132)",
-      //       backgroundColor: "rgba(255, 99, 132, 0.5)",
-      //     },
-      //     {
-      //       type: "bar" as const,
-      //       label: "Vốn hoá thị trường",
-      //       data: bitcoinChart.market_caps.map((market_cap: number[]) => {
-      //         return market_cap[1] / 110000;
-      //       }),
-      //       borderColor: "yellow",
-      //       backgroundColor: "yellow",
-      //     },
-      //     {
-      //       type: "bar" as const,
-      //       label: "Tổng volume",
-      //       data: bitcoinChart.total_volumes.map((total_volume: number[]) => {
-      //         return total_volume[1] / 10000;
-      //       }),
-      //       borderColor: "blue",
-      //       backgroundColor: "blue",
-      //     },
-      //   ],
-      // });
       console.log(range);
     },
     [coinData, selected, range]
@@ -266,7 +260,7 @@ function Chartks() {
       {selected ? <CryptoSummary crypto={selected} range={range} /> : null}
       {coinData ? (
         <div>
-          <Line
+          <Chart
             options={options}
             data={coinData}
             type="bar"
