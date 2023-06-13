@@ -7,7 +7,11 @@ import swal from "sweetalert";
 import { decode } from "../../../middleware/auth";
 import Pagination from "../../panigation";
 import { RoleScopes } from "../../../models/roles";
+import ExportUserToCsv from "./ExportUserToCsv";
+import { user } from "../../../seeders/user";
+
 const animatedComponents = makeAnimated();
+
 const RolePermOption = [
   { value: "perUser_view", label: "USER_VIEW" },
   { value: "perUser_add", label: "USER_ADD" },
@@ -58,9 +62,8 @@ function AdminTemplate() {
     relatedUser: [""],
     relatedType: [""],
   });
-  const handleChangeChecked = (e: any) => {
-    console.log(e.target.name, "eee");
 
+  const handleChangeChecked = (e: any) => {
     if (e.target.name === "relaType") {
       if (e.target.checked) {
         setFormSignUp({
@@ -74,7 +77,6 @@ function AdminTemplate() {
             (obj: any) => obj !== e.target.value || obj === ""
           ),
         });
-        console.log(formSignup, "relatye");
       }
     } else if (e.target.name === "relaUser") {
       if (e.target.checked) {
@@ -82,7 +84,6 @@ function AdminTemplate() {
           ...formSignup,
           relatedUser: [...formSignup.relatedUser, e.target.value],
         });
-        console.log(formSignup, "relatype");
       } else {
         setFormSignUp({
           ...formSignup,
@@ -90,13 +91,11 @@ function AdminTemplate() {
             (obj: any) => obj !== e.target.value || obj === ""
           ),
         });
-        console.log(formSignup, "relatye");
       }
     }
   };
   const getAllUser = async () => {
     const { data: res } = await axios.get("/api/userApi/get-all-user");
-    console.log(res.content.usersPerPage);
     setUsers(res.content.usersPerPage);
   };
 
@@ -125,11 +124,9 @@ function AdminTemplate() {
     let { name } = e.target;
     setFormSignUp({ ...formSignup, [name]: e.target.value });
     setConfirmPass({ ...confirmPass, [name]: e.target.value });
-    console.log(formSignup, "form");
   };
   const [isError, setIsError] = React.useState(false);
   const [search, setSearch] = React.useState("");
-  console.log(search);
   const [roles, setRoles] = React.useState([]);
   const [roleDetail, setRoleDetail] = React.useState([]);
   const [rol, setRol]: any = React.useState([]);
@@ -160,22 +157,17 @@ function AdminTemplate() {
 
   const getUserDetail = async (id: object) => {
     let result = await axios.post("/api/userApi/get-all-user", id);
-    console.log(result.data.content.data, "");
     setUserDetail(result.data.content.dataUsers);
     setRoles(result.data.content.roleData);
     setRoleDetail(result.data.content.data);
-    console.log(rol, "roleDetail");
   };
   const getTypeDetail = async (id: any) => {
     await axios
       .put("/api/typeApi/type-detail", id)
       .then((result) => {
-        console.log(result, "getTypeDetail");
         setTypeDetail(result.data.content);
       })
-      .catch((err) => {
-        console.log(err, "ees");
-      });
+      .catch((err) => {});
   };
   const getRoleDetail = async (id: any) => {
     await axios
@@ -192,17 +184,13 @@ function AdminTemplate() {
                 return item.roleScopes;
               });
         setRol(data);
-        console.log(data, "roleeeee");
       })
-      .catch((err) => {
-        console.log(err, "ees");
-      });
+      .catch((err) => {});
   };
   const delUser = async (id: object) => {
     await axios
       .post("/api/userApi/delete-user", id)
       .then((result) => {
-        console.log(result.data.message);
         swal({
           title: "Delete User success!!",
           text: `${result.data.message}`,
@@ -210,16 +198,13 @@ function AdminTemplate() {
         });
         getAllUser();
       })
-      .catch((err: any) => {
-        console.log(err);
-      });
+      .catch((err: any) => {});
   };
 
   const editUser = async (data: object) => {
     await axios
       .put("api/update/update-user", data)
       .then((result) => {
-        console.log(result);
         swal({
           title: "Update User success!!",
           text: `${result}`,
@@ -227,9 +212,7 @@ function AdminTemplate() {
         });
         getAllUser();
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const formCreateUserFetch = async (data: object) => {
@@ -260,9 +243,7 @@ function AdminTemplate() {
         .catch((err) => {
           alert(`${err.response.data.message}`);
         });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
   const [role, setRole] = React.useState([]);
   const getRole = async () => {
@@ -270,11 +251,8 @@ function AdminTemplate() {
       .get("/api/roleApi/get-all-role")
       .then((result) => {
         setRole(result.data.content);
-        console.log(result, "role result");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   const [typeFilter, setTypeFilter] = React.useState([]);
   const [type, setType] = React.useState([]);
@@ -284,26 +262,20 @@ function AdminTemplate() {
       .put("/api/typeApi/get-all-type", { id })
       .then((result) => {
         typeFilter.push(result.data.content[0]);
-        console.log(result, "typeFilter");
 
         setTypeFilter(typeFilter);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
     await axios
       .get("/api/typeApi/get-all-type")
       .then((result) => {
-        console.log(result, "");
         setType(
           result.data.content.filter((lv: any) => {
             return lv.typeLevel >= typeFilter[0].typeLevel;
           })
         );
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const [sort, setSort] = useState("ASC");
@@ -330,16 +302,13 @@ function AdminTemplate() {
     await axios
       .post(`/api/userApi/get-all-user`, id)
       .then((result) => {
-        console.log(result.data.content);
         setUserRoleDetail(
           result.data.content.data.map((roleId: any) => {
             return roleId.roleScopes;
           })
         );
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   const tryRole = [
     role?.map((rol: any, index: number) => {
@@ -362,7 +331,6 @@ function AdminTemplate() {
       return { value: `${type.id}`, label: `${type.typeName}` };
     }),
   ];
-  console.log(type, "typeeeeee");
 
   const [id, setId] = React.useState({});
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -372,7 +340,6 @@ function AdminTemplate() {
   const usersPagi = users.slice(firstIndex, lastIndex);
   const npage = Math.ceil(users.length / usersPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
-
   React.useEffect(() => {
     getAllUser();
     getRole();
@@ -381,10 +348,9 @@ function AdminTemplate() {
       let info: any = decode(dataInfo);
       getUserRoleDetail({ id: info.data.id });
       setId(info.data.id);
-      console.log(info.data.id, " info.data.id");
       getType(info.data.id);
     }
-  }, []);
+  }, [users, roles, type]);
 
   return (
     <>
@@ -435,9 +401,7 @@ function AdminTemplate() {
                     transform: "translateY(50%)",
                   }}
                 >
-                  <a href="#" className="inline-block">
-                    <img src="/download-user.svg" alt="download icon" />
-                  </a>
+                  <ExportUserToCsv users={users} />
                 </span>
                 <div
                   className="w-full modal fade"
