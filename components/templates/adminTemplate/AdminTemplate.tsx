@@ -1544,7 +1544,6 @@ function AdminTemplate() {
             </div>
           </div>
         </div>
-        <ToastContainer pauseOnFocusLoss={false} />
       </div>
     </>
   );

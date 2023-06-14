@@ -1,6 +1,12 @@
 import axios from "axios";
-import React, { memo, useEffect, useState } from "react";
-import { Tab, Table } from "semantic-ui-react";
+import React, { memo, useCallback, useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { Button, Tab, Table } from "semantic-ui-react";
+import {
+  getUserDefaultData,
+  newActionModal,
+} from "../../../recoil/Modal/modalState";
+// import { getAllUser } from "../../../recoil/services/userService";
 
 interface AppProps {
   search: any;
@@ -20,6 +26,20 @@ const UserTable = memo((props: AppProps) => {
     getTypeDetail,
   } = props;
   useEffect(() => {}, [usersPagi]);
+
+  const setModalHandle = useSetRecoilState(newActionModal);
+  const handleModal = (action: string) => {
+    setModalHandle(action);
+  };
+
+  // const userData = useRecoilValue(getUserDefaultData);
+  // console.log(userData, "user");
+
+  // userData(getAllUser as any);
+  // console.log(tableData, "tableData");
+  // let data = getAllUser();
+  // const {data} = getAllUser()
+  // console.log(data,'data')
   return (
     <>
       <Table celled selectable>
@@ -57,106 +77,48 @@ const UserTable = memo((props: AppProps) => {
                   <Table.Cell>{user.userRole}</Table.Cell>
                   <Table.Cell>{user.userType}</Table.Cell>
                   <Table.Cell>
-                    <div>
-                      <button
-                        className="del-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        type="button"
-                      >
-                        <img src="/trash-icon.svg" alt="delete user" />
-                      </button>
+                    <Button
+                      style={{ fontSize: "2px" }}
+                      onClick={() => {
+                        handleModal("MODAL_OPEN");
+                      }}
+                    >
+                      <img
+                        src="/trash-icon.svg"
+                        alt="delete user"
+                        style={{ scale: "0.8" }}
+                      />
+                    </Button>
 
-                      <div
-                        className="modal fade"
-                        id="exampleModal"
-                        tabIndex={-1}
-                        aria-labelledby="exampleModalLabel"
-                        aria-hidden="true"
-                      >
-                        <div
-                          className="modal-dialog"
-                          style={{ maxWidth: "800px" }}
-                        >
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <h1
-                                className="modal-title fs-5"
-                                id="exampleModalLabel"
-                              >
-                                <img
-                                  src="/warning-icon.svg"
-                                  alt="warning icon"
-                                />{" "}
-                                Delete this User?
-                              </h1>
-                              <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                              />
-                            </div>
-                            <div className="modal-body text-xl">
-                              Warning! This cannot be undone.
-                            </div>
-                            <div className="modal-footer">
-                              <button
-                                type="button"
-                                className="cancel-button"
-                                data-bs-dismiss="modal"
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                type="button"
-                                data-bs-dismiss="modal"
-                                className="del-user-button"
-                                onClick={() => {
-                                  delUser({ id: user.id });
-                                }}
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <Button
+                      style={{ fontSize: "2px" }}
+                      onClick={() => {
+                        handleModal("MODAL_OPEN");
+                      }}
+                    >
+                      <img
+                        src="/edit-icon.svg"
+                        alt="edit user"
+                        style={{ scale: "0.8" }}
+                      />
+                    </Button>
 
-                    <div>
-                      <button
-                        className="edit-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editUser"
-                        type="button"
-                        onClick={() => {
-                          setformUpdate(user);
-                          getUserDetail({ id: user.id });
-                          //   console.log(userDetail);
-                        }}
-                      >
-                        <img src="/edit-icon.svg" alt="edit user" />
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        className="view-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#userDetail"
-                        type="button"
-                        onClick={() => {
-                          // setUserDetail(user);
-                          getUserDetail({ id: user.id });
-                          //   console.log(user.userType, "id");
-                          getTypeDetail({ id: user.userType });
-                          //   console.log(userDetail.userDob, "eee");
-                          // let role =
-                        }}
-                      >
-                        <img src="/view-icon.svg" alt="view user" />
-                      </button>
-                    </div>
+                    <Button
+                      style={{ fontSize: "2px" }}
+                      onClick={() => {
+                        getUserDetail({ id: user.id });
+                        console.log(user.id);
+                        getTypeDetail({ id: user.userType });
+                        handleModal("MODAL_OPEN");
+                        // userIdRecoil(user.id);
+                      }}
+                    >
+                      <img
+                        src="/view-icon.svg"
+                        alt="view user"
+                        style={{ scale: "0.8" }}
+                      />
+                    </Button>
                   </Table.Cell>
                 </Table.Row>
               );

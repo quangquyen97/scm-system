@@ -13,7 +13,7 @@ export default function Sidebar() {
   useEffect(() => {
     if (typeof window !== undefined) {
       let checkUrl = window.document.URL;
-      setUrl(checkUrl);
+      // setUrl(checkUrl);
       // return checkUrl
     }
   }, []);
