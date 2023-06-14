@@ -79,7 +79,7 @@ function AdminTemplate() {
         setUsers(result.data.content.usersPerPage);
       })
       .catch((err) => {});
-  },[])
+  }, []);
 
   const [isPasswordViewed, setIsPasswordViewed] = useState(false);
   const [isPasswordViewed2, setIsPasswordViewed2] = useState(false);
@@ -215,7 +215,7 @@ function AdminTemplate() {
           alert(`${err.response.data.message}`);
         });
     } catch (err) {}
-  },[])
+  }, []);
   const [role, setRole] = useState([]);
   const getRole = async () => {
     await axios
