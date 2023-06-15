@@ -227,7 +227,6 @@ function AdminTemplate() {
       .get("/api/roleApi/get-all-role")
       .then((result) => {
         setRole(result.data.content);
-        console.log(result.data.content);
       })
       .catch((err) => {});
   };
@@ -235,12 +234,11 @@ function AdminTemplate() {
   const [type, setType] = useState([]);
   const getType = async (id: any) => {
     let typeFilter: any = [];
-    console.log(id);
     await axios
       .put("/api/typeApi/get-all-type", id)
       .then((result) => {
+        console.log(result);
         typeFilter.push(result.data.content[0]);
-
         setTypeFilter(typeFilter);
       })
       .catch((err) => {});
@@ -276,27 +274,28 @@ function AdminTemplate() {
 
   const [userRoleDetail, setUserRoleDetail] = useState([]);
 
-  const getUserRoleDetail = useCallback(async (id: object) => {
-    await axios
-      .post(`/api/userApi/get-all-user`, id)
-      .then((result) => {
-        // console.log(result.data.content.data);
-        const arr: any[] = [];
-        result.data.content.data.map((roleId: any) => {
-          return roleId.map((user: any) => {
-            arr.push(user);
+  const getUserRoleDetail = useCallback(
+    async (id: object) => {
+      await axios
+        .post(`/api/userApi/get-all-user`, id)
+        .then((result) => {
+          // console.log(result.data.content.data);
+          const arr: any[] = [];
+          result.data.content.data.map((roleId: any) => {
+            return roleId.map((user: any) => {
+              arr.push(user);
+            });
           });
-        });
-        setUserRoleDetail(
-          arr.map((obj: any) => {
-            return obj.roleScopes;
-          }) as any
-        );
-
-        console.log(userRoleDetail);
-      })
-      .catch((err) => {});
-  }, []);
+          setUserRoleDetail(
+            arr.map((obj: any) => {
+              return obj.roleScopes;
+            }) as any
+          );
+        })
+        .catch((err) => {});
+    },
+    [userRoleDetail]
+  );
 
   const roleOptionEdit = useMemo(() => {
     return role
@@ -308,12 +307,13 @@ function AdminTemplate() {
       });
   }, [role]);
 
-  console.log(roleOptionEdit);
-  const typeOptionEdit = [
-    type?.map((type: any, index: number) => {
+  const typeOptionEdit = useMemo(() => {
+    return type?.map((type: any, index: number) => {
       return { value: `${type.id}`, label: `${type.typeName}` };
-    }),
-  ];
+    });
+  }, [type]);
+
+  console.log(type);
 
   const [id, setId] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -326,13 +326,14 @@ function AdminTemplate() {
   useEffect(() => {
     getRole();
     getAllUser();
-    if (localStorage.getItem("userToken")) {
-      let dataInfo = JSON.parse(`${localStorage.getItem("userToken")}`);
-      let info: any = decode(dataInfo);
-      getUserRoleDetail({ id: info.data.id });
-      setId(info.data.id);
-      getType({ id: info.data.id });
-    }
+
+    let dataInfo = JSON.parse(`${localStorage.getItem("userToken")}`);
+    let info: any = decode(dataInfo);
+    getUserRoleDetail({ id: info.data.id });
+    setId(info.data.id);
+    console.log(info.data.id);
+    getType({ id: info.data.id });
+
     // console.log(window.document.URL)
   }, []);
 
@@ -671,7 +672,7 @@ function AdminTemplate() {
                             </label>
                             <Select
                               className="w-100 rounded-md shadow-sm mb-1 "
-                              options={typeOptionEdit[0]}
+                              options={typeOptionEdit}
                               components={animatedComponents}
                               isMulti={true}
                               instanceId="userType"
@@ -1506,7 +1507,7 @@ function AdminTemplate() {
                         </label>
                         <div className="pb-3">
                           <Select
-                            options={typeOptionEdit[0]}
+                            options={typeOptionEdit}
                             isMulti
                             instanceId="userTypeCreate"
                             components={animatedComponents}

@@ -21,13 +21,20 @@ export default async function getAllRole(
     } else if (req.method == "PUT") {
       let { id } = req.body;
       let userInf = await model.Users.findByPk(id)
-      let userLevel = await model.Type.findAll({
-        where: {
-          id: userInf?.dataValues.userType
-        }
-      })
+      console.log(String(userInf?.dataValues.userType).split(','))
+      let user: any = []
+      for (let i = 0; i < String(userInf?.dataValues.userType).split(',').length; i++) {
+        user = await model.Type.findAll({
+          where: {
+            id: String(userInf?.dataValues.userType).split(',')[i]
+          }
+        })
+        // return userLevel
+      }
+      console.log(user)
 
-      successCode(res, userLevel, " User Level Success")
+
+      successCode(res, user, " User Level Success")
     } else {
       failCode(res, req, "Error method");
     }

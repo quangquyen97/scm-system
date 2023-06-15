@@ -169,7 +169,7 @@ const UserTable = memo((props: AppProps) => {
                     {user.userEmail}
                   </Table.Cell>
                   <Table.Cell>
-                    {user.userDob.replace("T00:00:00.000Z", "")}
+                    {user.userDob?.replace("T00:00:00.000Z", "")}
                   </Table.Cell>
                   <Table.Cell>{user.userPhoneNumber}</Table.Cell>
                   <Table.Cell>đang fix</Table.Cell>
