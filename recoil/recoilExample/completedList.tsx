@@ -8,9 +8,7 @@ const CompletedList = () => {
     <div className="col">
       <h3>Completed</h3>
       <ul>
-        {completedList.map((item: {
-            content: ReactNode; id: any
-}) => (
+        {completedList.map((item: { content: ReactNode; id: any }) => (
           <li key={item.id}>{item.content}</li>
         ))}
       </ul>

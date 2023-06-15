@@ -1,7 +1,7 @@
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import "bootstrap/dist/css/bootstrap.css";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import "flowbite";
 import Sidebar from "../components/main-template/Sidebar";
 import Header from "../components/main-template/Header";
@@ -14,6 +14,8 @@ import CompletedList from "../recoil/recoilExample/completedList";
 import NewActionInput from "../recoil/recoilExample/NewActionInput";
 import ModalExampleDimmer from "../recoil/Modal/Modal";
 import { ToastContainer } from "react-toastify";
+import ModalDelete from "../recoil/Modal/ModalDeleteUser";
+import Loading from "../components/Loading";
 function MyApp({ Component, pageProps }: AppProps) {
   const [isLogin, setIsLogin] = useState(false);
 
@@ -47,12 +49,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                 : ""
             }
           >
-            <Component {...pageProps} />
-            <NewActionInput />
-            <NewList />
-            <InProgressList />
-            <CompletedList />
-            <ModalExampleDimmer />
+            <Suspense fallback={<Loading />}>
+              <Component {...pageProps} />
+            </Suspense>
+            <ModalDelete />
             <ToastContainer pauseOnFocusLoss={false} />
           </div>
         </div>

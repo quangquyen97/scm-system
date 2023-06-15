@@ -13,8 +13,8 @@ function ModalExampleDimmer() {
     <div className="h-auto w-auto">
       <Button
         onClick={() => {
-          handleModal("MODAL_OPEN");
           console.log(modalListAtt);
+          handleModal("MODAL_OPEN");
         }}
       >
         Default
@@ -35,7 +35,9 @@ function ModalExampleDimmer() {
           <Button negative onClick={() => handleModal("MODAL_CLOSE")}>
             Disagree
           </Button>
-          <Button positive onClick={() => handleModal("MODAL_CLOSE")}>
+          <Button positive onClick={(
+
+          ) => handleModal("MODAL_CLOSE")}>
             Agree
           </Button>
         </Modal.Actions>

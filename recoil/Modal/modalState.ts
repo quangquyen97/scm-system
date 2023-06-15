@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import axios from "axios";
 import { Data } from "react-csv/components/CommonPropTypes";
-import { atom, selector } from "recoil"
+import { atom, RecoilValue, selector } from "recoil"
 import { notifiError, notifiSuccess } from "../../components/toastify-noti/notifi";
 import { userService } from "../services/userService";
 
@@ -18,27 +18,29 @@ const listModalAttributes = atom({
     key: 'listModal',
     default: modalAttributesData
 })
-
+const listUserData = atom({
+    key: "listUser",
+    default: [],
+})
 export const getUserDefaultData = selector({
     key: 'getUserDefaultDataS',
     get: async ({ get }) => {
-        let data = await userService.getAllUser()
-        console.log(data, 'data')
-        return await userService.getAllUser()
+        // let data = await userService.getAllUser()
+        const list = get(listUserData);
+        // console.log(data, 'data')
+        return list
     },
-    set: async ({ set, get }, newData) => {
+    set: ({ set, get }, newData: any) => {
         // Update state w/ new appended values
-        const currentState = await get(listUserData);
+        const list = get(listUserData);
 
-        console.log(currentState)
-        set(listUserData, newData);
+        console.log(newData)
+        return set(listUserData, newData);
     },
 })
-const listUserData = atom({
-    key: "listUser",
-    default: getUserDefaultData,
-})
-console.log(listUserData, 'listUserData')
+
+
+// console.log(listUserData, 'listUserData')
 
 
 
@@ -63,13 +65,42 @@ export const newActionModal = selector({
 })
 
 
-export const modalDeleteUserAction = selector({
-    key: "modalDeleteUser",
-    get: async ({ get }) => {
-        const id = get(listModalAttributes);
+const userId = atom({
+    key: 'userId',
+    default: {
+        id: 0
+    }
+})
 
+export const modalSetIdAction = selector({
+    key: "modalDeleteUser",
+    get: ({ get }) => {
+        const id = get(userId);
+        return id;
     },
-    set: ({ get, set }, id) => {
-        const list = get(listModalAttributes);
+    set: ({ get, set }, id: any) => {
+        const list = get(userId);
+        console.log(id)
+        return set(userId, { ...list, id: id })
+    }
+})
+
+export const modalDeleteUserAction = selector({
+    key: "deleteUserAction",
+    get: ({ get }) => {
+        const id = get(listUserData)
+    },
+    set: async ({ get, set }, id) => {
+        const data = get(listUserData);
+        const result = userService.deleteUser(id)
+        console.log(result)
+        // .then((result: any) => {
+        //     notifiSuccess({ message: "Delete User success!!" });
+        //     console.log(result)
+        //     // return set(listUserData, [...id, result])
+        // })
+        // .catch((err) => {
+        //     notifiError({ message: "Delete User Failed!!!" });
+        // });
     }
 })

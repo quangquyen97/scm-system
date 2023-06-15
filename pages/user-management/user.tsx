@@ -1,5 +1,5 @@
 import React from 'react'
-import AdminTemplate from '../components/templates/adminTemplate/AdminTemplate'
+import AdminTemplate from '../../components/templates/adminTemplate/AdminTemplate'
 
 function adminTemplate() {
   return (

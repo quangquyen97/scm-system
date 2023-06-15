@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { object, string, date } from "yup";
 import Select from "react-select";
@@ -9,6 +9,8 @@ import ExportUserToCsv from "./ExportUserToCsv";
 import { notifiError, notifiSuccess } from "../../toastify-noti/notifi";
 import { ToastContainer } from "react-toastify";
 import UserTable from "./UserTable";
+import { getUserDefaultData } from "../../../recoil/Modal/modalState";
+import { useRecoilValue } from "recoil";
 const animatedComponents = makeAnimated();
 
 function AdminTemplate() {
@@ -137,12 +139,14 @@ function AdminTemplate() {
     userLasName: string().required().min(2).max(50),
   });
 
-  const getUserDetail = async (id: object) => {
-    let result = await axios.post("/api/userApi/get-all-user", id);
-    setUserDetail(result.data.content.dataUsers);
-    setRoles(result.data.content.roleData);
-    setRoleDetail(result.data.content.data);
-  };
+  const getUserDetail = useCallback(() => {
+    async (id: object) => {
+      let result = await axios.post("/api/userApi/get-all-user", id);
+      setUserDetail(result.data.content.dataUsers);
+      setRoles(result.data.content.roleData);
+      setRoleDetail(result.data.content.data);
+    };
+  }, []);
   const getTypeDetail = async (id: any) => {
     await axios
       .put("/api/typeApi/type-detail", id)
@@ -212,7 +216,8 @@ function AdminTemplate() {
           });
         })
         .catch((err) => {
-          alert(`${err.response.data.message}`);
+          console.log(err);
+          notifiError({ message: "Create New User fail!!" });
         });
     } catch (err) {}
   }, []);
@@ -222,6 +227,7 @@ function AdminTemplate() {
       .get("/api/roleApi/get-all-role")
       .then((result) => {
         setRole(result.data.content);
+        console.log(result.data.content);
       })
       .catch((err) => {});
   };
@@ -270,37 +276,39 @@ function AdminTemplate() {
 
   const [userRoleDetail, setUserRoleDetail] = useState([]);
 
-  const getUserRoleDetail = useCallback(
-    async (id: object) => {
-      await axios
-        .post(`/api/userApi/get-all-user`, id)
-        .then((result) => {
-          setUserRoleDetail(
-            result.data.content.data.map((roleId: any) => {
-              return roleId.roleScopes;
-            })
-          );
-        })
-        .catch((err) => {});
-    },
-    [userRoleDetail]
-  );
-  const tryRole = [
-    role?.map((rol: any, index: number) => {
-      index = rol.id;
+  const getUserRoleDetail = useCallback(async (id: object) => {
+    await axios
+      .post(`/api/userApi/get-all-user`, id)
+      .then((result) => {
+        // console.log(result.data.content.data);
+        const arr: any[] = [];
+        result.data.content.data.map((roleId: any) => {
+          return roleId.map((user: any) => {
+            arr.push(user);
+          });
+        });
+        setUserRoleDetail(
+          arr.map((obj: any) => {
+            return obj.roleScopes;
+          }) as any
+        );
 
-      return rol.roleScopes;
-    }),
-  ];
+        console.log(userRoleDetail);
+      })
+      .catch((err) => {});
+  }, []);
 
-  const roleOptionEdit = [
-    role
-      ?.filter((rol: any) => rol.roleScopes.includes(userRoleDetail))
+  const roleOptionEdit = useMemo(() => {
+    return role
+      .filter((rol: any) =>
+        rol.roleScopes.includes(userRoleDetail.map((item) => item))
+      )
       .map((obj: any) => {
         return { value: obj.id, label: obj.roleName };
-      }),
-  ];
+      });
+  }, [role]);
 
+  console.log(roleOptionEdit);
   const typeOptionEdit = [
     type?.map((type: any, index: number) => {
       return { value: `${type.id}`, label: `${type.typeName}` };
@@ -316,8 +324,8 @@ function AdminTemplate() {
   const npage = Math.ceil(users.length / usersPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1);
   useEffect(() => {
-    getAllUser();
     getRole();
+    getAllUser();
     if (localStorage.getItem("userToken")) {
       let dataInfo = JSON.parse(`${localStorage.getItem("userToken")}`);
       let info: any = decode(dataInfo);
@@ -608,7 +616,7 @@ function AdminTemplate() {
                             <Select
                               isMulti={true}
                               instanceId="userRole"
-                              options={roleOptionEdit[0]}
+                              options={roleOptionEdit}
                               className="w-100 rounded-md shadow-sm mb-1  "
                               components={animatedComponents}
                               onChange={async (e: any) => {
@@ -1447,7 +1455,7 @@ function AdminTemplate() {
                             style={{ borderRadius: 4 }}
                           />
                           <Select
-                            options={roleOptionEdit[0]}
+                            options={roleOptionEdit}
                             isMulti
                             instanceId="userRoleCreate"
                             className="select-option"

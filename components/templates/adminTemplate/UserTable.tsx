@@ -1,12 +1,27 @@
 import axios from "axios";
-import React, { memo, useCallback, useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import _, { PropertyName, ObjectIterator, PartialShallow } from "lodash";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from "recoil";
 import { Button, Tab, Table } from "semantic-ui-react";
 import {
-  getUserDefaultData,
+  // getUserDefaultData,
+  // getUserDefaultData,
+  modalSetIdAction,
   newActionModal,
 } from "../../../recoil/Modal/modalState";
+import { userService } from "../../../recoil/services/userService";
 // import { getAllUser } from "../../../recoil/services/userService";
+
+
+
+
+
 
 interface AppProps {
   search: any;
@@ -16,6 +31,70 @@ interface AppProps {
   getUserDetail: any;
   getTypeDetail: any;
 }
+
+
+function Sort(
+  state: { column: any; data: any[]; direction: string },
+  action: {
+    type: any;
+    column:
+      | any
+      | string
+      | number
+      | symbol
+      | [PropertyName, any]
+      | ObjectIterator<any, unknown>
+      | PartialShallow<any>;
+  }
+) {
+  switch (action.type) {
+    case "CHANGE_SORT":
+      if (state.column === action.column) {
+        return {
+          ...state,
+          data: state.data.slice().reverse(),
+          direction:
+            state.direction === "ascending" ? "descending" : "ascending",
+        };
+      }
+
+      return {
+        column: action.column,
+        data: _.sortBy(state.data, [action.column]),
+        direction: "ascending",
+      };
+    default:
+      throw new Error();
+  }
+}
+
+
+
+export const getUserDefaultData = selector({
+  key: "getUserDefaultDataS",
+  get: async ({ get }) => {
+    // let data = await userService.getAllUser()
+    const list = get(listUserData);
+    console.log(list);
+    if (list.length === 0) {
+      return null;
+    }
+    // console.log(data, 'data')
+    return list;
+  },
+  set: ({ set, get }, newData: any) => {
+    // Update state w/ new appended values
+    const list = get(listUserData);
+    if (!newData) {
+      return null;
+    }
+    return set(listUserData, newData);
+  },
+});
+const listUserData = atom({
+  key: "listUser",
+  default: [],
+});
 const UserTable = memo((props: AppProps) => {
   const {
     search,
@@ -25,24 +104,43 @@ const UserTable = memo((props: AppProps) => {
     getUserDetail,
     getTypeDetail,
   } = props;
-  useEffect(() => {}, [usersPagi]);
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  console.log(listUserData);
+  const on = useSetRecoilState(getUserDefaultData);
+
+  const getUser = useCallback(() => {
+    async () => {
+      await axios
+        .get("/api/userApi/get-all-user")
+        .then((result) => {
+          console.log(result);
+          on(result.data.content.usersPerPage);
+        })
+        .catch((err) => console.log(err));
+    };
+  }, []);
 
   const setModalHandle = useSetRecoilState(newActionModal);
-  const handleModal = (action: string) => {
+  const handleModal = async (action: string) => {
     setModalHandle(action);
   };
 
+  // const [state, dispatch] = React.useReducer(exampleReducer, {
+  //   column: null,
+  //   data: tableData,
+  //   direction: null,
+  // });
+  // const { column, data, direction } = state;
+  const setId = useSetRecoilState(modalSetIdAction);
   // const userData = useRecoilValue(getUserDefaultData);
-  // console.log(userData, "user");
-
-  // userData(getAllUser as any);
-  // console.log(tableData, "tableData");
-  // let data = getAllUser();
-  // const {data} = getAllUser()
-  // console.log(data,'data')
+  // console.log(userData); //! loop
   return (
     <>
-      <Table celled selectable>
+      <Table selectable singleline sortable celled>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>No</Table.HeaderCell>
@@ -74,12 +172,13 @@ const UserTable = memo((props: AppProps) => {
                     {user.userDob.replace("T00:00:00.000Z", "")}
                   </Table.Cell>
                   <Table.Cell>{user.userPhoneNumber}</Table.Cell>
-                  <Table.Cell>{user.userRole}</Table.Cell>
+                  <Table.Cell>đang fix</Table.Cell>
                   <Table.Cell>{user.userType}</Table.Cell>
                   <Table.Cell>
                     <Button
                       style={{ fontSize: "2px" }}
                       onClick={() => {
+                        setId(user.id);
                         handleModal("MODAL_OPEN");
                       }}
                     >
@@ -107,10 +206,10 @@ const UserTable = memo((props: AppProps) => {
                       style={{ fontSize: "2px" }}
                       onClick={() => {
                         getUserDetail({ id: user.id });
-                        console.log(user.id);
+                        // console.log(user.id);
                         getTypeDetail({ id: user.userType });
+                        setId(user.id);
                         handleModal("MODAL_OPEN");
-                        // userIdRecoil(user.id);
                       }}
                     >
                       <img
