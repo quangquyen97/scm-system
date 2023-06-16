@@ -217,7 +217,7 @@ function AdminTemplate() {
           });
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           notifiError({ message: "Create New User fail!!" });
         });
     } catch (err) {}
@@ -244,7 +244,7 @@ function AdminTemplate() {
         result.data.content.map(
           (type: { [x: string]: any; typeLevel: any }) => {
             type.map((level: any) => {
-              console.log(level);
+              // console.log(level);
               return typeFilter.push(type[0]);
             });
           }
@@ -271,7 +271,7 @@ function AdminTemplate() {
           })
         );
 
-        console.log(typeFilter.typeLevel);
+        // console.log(typeFilter.typeLevel);
       })
       .catch((err: any) => {});
   };
@@ -335,7 +335,7 @@ function AdminTemplate() {
     });
   }, [type]);
 
-  console.log(type);
+  // console.log(type);
 
   const [id, setId] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -593,8 +593,8 @@ function AdminTemplate() {
                                 setConfirmPass({
                                   confirmPassword: e.target.value,
                                 });
-                                console.log(confirmPass, "eee");
-                                console.log(formSignup.userPassword, "aaa");
+                                // console.log(confirmPass, "eee");
+                                // console.log(formSignup.userPassword, "aaa");
                                 handleOnChangeSignup;
                                 if (
                                   confirmPass.confirmPassword !== e.target.value
@@ -603,7 +603,7 @@ function AdminTemplate() {
                                 } else {
                                   setIsError(false);
                                 }
-                                console.log(isError);
+                                // console.log(isError);
                               }}
                             />
                             <span>
@@ -649,7 +649,7 @@ function AdminTemplate() {
                                     return item.value;
                                   }),
                                 });
-                                console.log(formSignup.userRole);
+                                // console.log(formSignup.userRole);
                                 getRoleDetail({
                                   id: e.map((item: any) => {
                                     return item.value;
@@ -667,18 +667,18 @@ function AdminTemplate() {
                                       ...relaUser,
                                       relaUser: result.data.content.map(
                                         (item: any) => {
-                                          console.log(item, "item");
+                                          // console.log(item, "item");
                                           return item;
                                         }
                                       ),
                                     });
-                                    console.log(
-                                      result.data.content,
-                                      "relaUser"
-                                    );
+                                    // console.log(
+                                    //   result.data.content,
+                                    //   "relaUser"
+                                    // );
                                   })
                                   .catch((err) => {
-                                    console.log(err);
+                                    // console.log(err);
                                   });
                               }}
                               placeholder="Select Role"
@@ -705,7 +705,7 @@ function AdminTemplate() {
                                     return item.value;
                                   }),
                                 });
-                                console.log(rol, "esđsds");
+                                // console.log(rol, "esđsds");
 
                                 await axios
                                   .put("/api/userApi/signup", {
@@ -715,11 +715,11 @@ function AdminTemplate() {
                                     }),
                                   })
                                   .then((result) => {
-                                    console.log(result);
+                                    // console.log(result);
                                     setRelaType(result.data.content);
                                   })
                                   .catch((err) => {
-                                    console.log(err);
+                                    // console.log(err);
                                   });
                               }}
                               placeholder="Select Type"
@@ -1198,7 +1198,7 @@ function AdminTemplate() {
                                 ...userInfo,
                                 userLastName: e.target.value,
                               };
-                              console.log(formSignup);
+                              // console.log(formSignup);
                             }}
                             type="text"
                             autoComplete="current-password"
@@ -1489,7 +1489,7 @@ function AdminTemplate() {
                                 ...formUpdate,
                                 userRole: data,
                               });
-                              console.log(formUpdate.userRole, "select role");
+                              // console.log(formUpdate.userRole, "select role");
                             }}
                           />
                         </div>
@@ -1539,7 +1539,7 @@ function AdminTemplate() {
                                 ...formUpdate,
                                 userType: data,
                               });
-                              console.log(formUpdate, "select type");
+                              // console.log(formUpdate, "select type");
                             }}
                           />
                         </div>
