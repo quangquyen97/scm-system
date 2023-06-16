@@ -42,6 +42,6 @@ jobs:
         run: |-
           gcloud run deploy $REPO_NAME \
           --region $REGION \
-          --image gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA \
-          --platform "managed" \
-          --quiet
+          --image gcr.io/scmsystem-a00f1/scmsystem \
+          --platform "managed" \ 
+          --quiet 
