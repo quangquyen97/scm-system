@@ -140,7 +140,7 @@ export const getDataTableState = selector({
         const list: any = get(tableDataState);
         // console.log(list.data.slice().reverse());
 
-        const { type, column } = action;
+        const { column, type }: any = action;
         switch (type) {
             case "CHANGE_SORT":
                 console.log(list.column, column);
