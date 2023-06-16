@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import UserTable from "./UserTable";
 import { getUserDefaultData } from "../../../recoil/Modal/modalState";
 import { useRecoilValue } from "recoil";
+import _ from "lodash";
 const animatedComponents = makeAnimated();
 
 function AdminTemplate() {
@@ -27,7 +28,7 @@ function AdminTemplate() {
     userRole: "",
     userType: "",
   });
-  const [relaType, setRelaType] = useState({ relaType: [] });
+  const [relaType, setRelaType] = useState([]);
   const [relaUser, setRelaUser] = useState({ relaUser: [] });
   const [formSignup, setFormSignUp] = useState({
     userType: [""],
@@ -230,28 +231,49 @@ function AdminTemplate() {
       })
       .catch((err) => {});
   };
-  const [typeFilter, setTypeFilter] = useState([]);
+
   const [type, setType] = useState([]);
+
   const getType = async (id: any) => {
     let typeFilter: any = [];
     await axios
       .put("/api/typeApi/get-all-type", id)
       .then((result) => {
-        console.log(result);
-        typeFilter.push(result.data.content[0]);
-        setTypeFilter(typeFilter);
+        // console.log(_.union(result.data.content.map((obj: any) => obj)));
+
+        result.data.content.map(
+          (type: { [x: string]: any; typeLevel: any }) => {
+            type.map((level: any) => {
+              console.log(level);
+              return typeFilter.push(type[0]);
+            });
+          }
+        );
+        for (let i = 1; i < typeFilter.length; i++) {
+          let max = typeFilter[0].typeLevel;
+          typeFilter = typeFilter[0];
+          if (typeFilter[i].typeLevel < max) {
+            typeFilter = typeFilter[i];
+            max = typeFilter[i].typeLevel;
+          }
+        }
       })
       .catch((err) => {});
+
     await axios
       .get("/api/typeApi/get-all-type")
       .then((result) => {
+        // console.log(result.data.content);
+
         setType(
           result.data.content.filter((lv: any) => {
-            return lv.typeLevel >= typeFilter[0].typeLevel;
+            return lv.typeLevel >= typeFilter.typeLevel;
           })
         );
+
+        console.log(typeFilter.typeLevel);
       })
-      .catch((err) => {});
+      .catch((err: any) => {});
   };
 
   const [sort, setSort] = useState("ASC");
@@ -308,7 +330,7 @@ function AdminTemplate() {
   }, [role]);
 
   const typeOptionEdit = useMemo(() => {
-    return type?.map((type: any, index: number) => {
+    return type?.map((type: any) => {
       return { value: `${type.id}`, label: `${type.typeName}` };
     });
   }, [type]);
@@ -693,10 +715,8 @@ function AdminTemplate() {
                                     }),
                                   })
                                   .then((result) => {
-                                    setRelaType({
-                                      ...relaType,
-                                      relaType: result.data.content,
-                                    });
+                                    console.log(result);
+                                    setRelaType(result.data.content);
                                   })
                                   .catch((err) => {
                                     console.log(err);
@@ -751,40 +771,42 @@ function AdminTemplate() {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {relaType.relaType.map(
-                                    (item: any, index: number) => {
-                                      return (
-                                        <tr
-                                          key={item.id}
-                                          className="item-material"
-                                        >
-                                          <td>
-                                            <input
-                                              name="relaType"
-                                              type="checkbox"
-                                              value={item.id}
-                                              onChange={handleChangeChecked}
-                                            />
-                                          </td>
-                                          <td style={{ fontSize: 12 }}>
-                                            {index++}
-                                          </td>
-                                          <td style={{ fontSize: 12 }}>
-                                            {item.userFirstName}
-                                          </td>
-                                          <td style={{ fontSize: 12 }}>
-                                            {item.userLastName}
-                                          </td>
-                                          <td style={{ fontSize: 12 }}>
-                                            {item.userEmail}
-                                          </td>
-                                          <td style={{ fontSize: 12 }}>
-                                            {item.userPhoneNumber}
-                                          </td>
-                                        </tr>
-                                      );
-                                    }
-                                  )}
+                                  {relaType
+                                    ? relaType?.map(
+                                        (item: any, index: number) => {
+                                          return (
+                                            <tr
+                                              key={item.id}
+                                              className="item-material"
+                                            >
+                                              <td>
+                                                <input
+                                                  name="relaType"
+                                                  type="checkbox"
+                                                  value={item.id}
+                                                  onChange={handleChangeChecked}
+                                                />
+                                              </td>
+                                              <td style={{ fontSize: 12 }}>
+                                                {index++}
+                                              </td>
+                                              <td style={{ fontSize: 12 }}>
+                                                {item.userFirstName}
+                                              </td>
+                                              <td style={{ fontSize: 12 }}>
+                                                {item.userLastName}
+                                              </td>
+                                              <td style={{ fontSize: 12 }}>
+                                                {item.userEmail}
+                                              </td>
+                                              <td style={{ fontSize: 12 }}>
+                                                {item.userPhoneNumber}
+                                              </td>
+                                            </tr>
+                                          );
+                                        }
+                                      )
+                                    : null}
                                 </tbody>
                               </table>
                             </div>
